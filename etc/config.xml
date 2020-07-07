@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+/**
+ * @author Monogo
+ * @copyright Copyright (c) 2019 Monogo (https://monogo.pl)
+ * @package Monogo_Smsapi
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <smsapi>
+            <general>
+                <enable>0</enable>
+                <apitoken backend_model="Magento\Config\Model\Config\Backend\Encrypted"></apitoken>
+                <allow_long>0</allow_long>
+                <service>pl</service>
+                <alert_limit>2</alert_limit>
+            </general>
+        </smsapi>
+    </default>
+</config>

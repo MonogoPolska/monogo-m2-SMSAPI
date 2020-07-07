@@ -1,0 +1,28 @@
+{
+    "name": "monogo/smsapi",
+    "description": "Magento 2 SMSAPI integration",
+    "require": {
+        "php": "~7.0.0|~7.1.0|~7.2.0|~7.3.0|",
+        "magento/magento-composer-installer": "*",
+        "magento/framework": "*",
+        "smsapi/php-client": "^2.1"
+    },
+    "type": "magento2-module",
+    "version": "1.0.1",
+    "license": "Apache-2.0",
+    "keywords": ["Magento 2", "smsapi", "smsapi.pl", "smsapi.com"],
+    "authors": [
+        {
+            "name": "Monogo Sp z o.o.",
+            "email": "support@monogo.pl"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Monogo\\Smsapi\\": ""
+        }
+    }
+}

@@ -1,0 +1,25 @@
+.config-nav-block.monogo-tab strong:before {
+    background: url(../images/monogo-icon.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    content: '';
+    display: inline-block;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+.smsapi_message_infobox {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #CCC;
+    margin-bottom: 7px;
+    background-color: #eeeeee;
+}
+
+.smsapi_message_infobox ul {
+    list-style-position: inside;
+}
+
+.char-counter{
+    font-size: smaller;
+}

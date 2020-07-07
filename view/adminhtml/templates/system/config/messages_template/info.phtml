@@ -1,0 +1,55 @@
+<?php
+/**
+ * Info template
+ *
+ * @category SMSAPI
+ * @package  Monogo|SMSAPI
+ * @author   Paweł Detka <pawel.detka@monogo.pl>
+ */
+?>
+<?php
+/**
+ * @var $block \Monogo\Smsapi\Block\Adminhtml\System\Config\Template\Info
+ */
+?>
+
+<div class="smsapi_message_infobox">
+    <?= __('In each template you can use dynamic variables.') ?>
+    <br/>
+    <?= __('Possible values:') ?>
+    <ul>
+        <li>{NAME} - <?= __('Customer name') ?></li>
+        <li>{LASTNAME} - <?= __('Customer last name') ?></li>
+        <li>{EMAIL} - <?= __('Customer email') ?></li>
+        <li>{ORDERVALUEGROSS} - <?= __('Gross order value') ?></li>
+        <li>{ORDERVALUENET} - <?= __('Net order value') ?></li>
+        <li>{ORDERSTATUS} - <?= __('Order status') ?></li>
+        <li>{ORDERNUMBER} - <?= __('Order number') ?></li>
+        <li>{SHIPPINGADDRESS} - <?= __('Shipping address') ?></li>
+        <li>{TRACKINGNUMBER} - <?= __('Tracking number (if exists)') ?></li>
+        <li>{STORENAME} - <?= __('Store name') ?></li>
+    </ul>
+
+    <br/><b><?= __('Example:') ?></b> <?= __('Your order #{ORDERNUMBER} waits for a fee. Regards {STORENAME}') ?>
+    <br/><b><?= __('SMS Content:') ?></b> <?= __('Your order #10023422 waits for a fee. Regards SMSAPI') ?>
+</div>
+
+
+<script>
+    require(['jquery'], function ($) {
+
+        $(document).on('keyup mouseover', '.message-input', function () {
+            showCount($(this));
+        });
+
+        function showCount(field) {
+            let textValue = $(field).val();
+            let id = $(field).attr('id');
+            let aboutText = '';
+            if (textValue.indexOf("{") >= 0 && textValue.indexOf("}") >= 0) {
+                aboutText = ' <?= __('(used variables) about') ?> ';
+            }
+            $('.' + id).text(aboutText + textValue.length).parent().show();
+        }
+    });
+</script>

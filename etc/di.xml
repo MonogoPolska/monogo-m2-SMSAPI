@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Monogo\Smsapi\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Monogo\Smsapi\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">SMSAPI</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Monogo\Smsapi\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="smsapi/smsapi/apitoken" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
