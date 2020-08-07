@@ -1,40 +1,26 @@
 <?php
 
-namespace Monogo\Smsapi\Block\Adminhtml\System\Config;
+namespace Smsapi\Smsapi2\Block\Adminhtml\System\Config;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use Monogo\Smsapi\Helper\Config;
-use Monogo\Smsapi\Model\Api\Client;
+use Smsapi\Smsapi2\Helper\Config;
+use Smsapi\Smsapi2\Model\Api\Client;
 
 /**
  * Status Block
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Status extends Field
 {
-    /**
-     * @var Config
-     */
-    protected $config;
+    protected $config = null;
 
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected $client = null;
 
-    /**
-     * Status constructor.
-     *
-     * @param Context $context
-     * @param Config  $config
-     * @param Client  $client
-     * @param array   $data
-     */
     public function __construct(
         Context $context,
         Config $config,
@@ -98,5 +84,10 @@ class Status extends Field
     public function getErrors()
     {
         return $this->client->getErrors();
+    }
+
+    public function getService()
+    {
+        return $this->config->getService();
     }
 }

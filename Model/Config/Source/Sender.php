@@ -1,17 +1,17 @@
 <?php
 
-namespace Monogo\Smsapi\Model\Config\Source;
+namespace Smsapi\Smsapi2\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
-use Monogo\Smsapi\Helper\Config;
-use Monogo\Smsapi\Helper\Log;
-use Monogo\Smsapi\Model\Api\Client;
+use Smsapi\Smsapi2\Helper\Config;
+use Smsapi\Smsapi2\Helper\Log;
+use Smsapi\Smsapi2\Model\Api\Client;
 
 /**
  * Sender source model
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Sender implements OptionSourceInterface
@@ -44,13 +44,6 @@ class Sender implements OptionSourceInterface
      */
     protected $client = null;
 
-    /**
-     * Sender constructor.
-     *
-     * @param Log    $log
-     * @param Config $config
-     * @param Client $client
-     */
     public function __construct(
         Log $log,
         Config $config,

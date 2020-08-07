@@ -3,30 +3,31 @@
  * Status template
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 ?>
 <?php
 /**
- * @var $block \Monogo\Smsapi\Block\Adminhtml\System\Config\Status
+ * @var $block \Smsapi\Smsapi2\Block\Adminhtml\System\Config\Status
  */
 ?>
-    <style>
-        .accordion .config .label {
-            width: 15% !important;
-        }
+<style>
+    .accordion .config .label {
+        width: 15% !important;
+    }
 
-        .accordion .config .value {
-            width: 85% !important;
-        }
-    </style>
+    .accordion .config .value {
+        width: 85% !important;
+    }
+</style>
 
 <?php if (!$block->isValid()): ?>
     <div class="smsapi_system_status_container_register">
         <button id="gotodashboard" title="<?= __('Go to SMSAPI dashboard') ?>" type="button"
                 class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-                data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false" onclick="window.open('https://www.smsapi.pl/rejestracja')">
+                data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false"
+                onclick="window.open('https://www.smsapi.pl/oauth')">
             <span class="ui-button-text">
                <span><?= __('Register in SMSAPI') ?></span>
             </span>
@@ -49,11 +50,20 @@
         <span><a href="https://ssl.smsapi.pl/"></a></span><br/>
         <button id="gotodashboard" title="<?= __('Go to SMSAPI dashboard') ?>" type="button"
                 class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-                data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false" onclick="window.open('https://ssl.smsapi.pl/')">
+                data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false"
+                onclick="window.open('https://ssl.smsapi.<?= $block->getService() ?>/react/oauth/manage')">
             <span class="ui-button-text">
-               <span><?= __('Go to SMSAPI dashboard') ?></span>
+               <span><?= __('To generate key click here') ?></span>
             </span>
         </button>
     </div>
 
 <?php endif; ?>
+
+<script>
+    require(['jquery'], function ($) {
+        var service = '<?= $block->getService()?>';
+        var href = "window.open('https://ssl.smsapi.xxx/sms_settings/sendernames/')";
+        $("#senders_comment").attr("onclick", href.replace('xxx', service)).css("font-weight", "bold");
+    });
+</script>

@@ -2,6 +2,6 @@
 
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
-    'Monogo_Smsapi',
+    'Smsapi_Smsapi2',
     __DIR__
 );

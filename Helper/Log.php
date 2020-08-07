@@ -1,16 +1,16 @@
 <?php
 
-namespace Monogo\Smsapi\Helper;
+namespace Smsapi\Smsapi2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Monogo\Smsapi\Logger\Logger;
+use Smsapi\Smsapi2\Logger\Logger;
 
 /**
  * Log helper
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Log extends AbstractHelper

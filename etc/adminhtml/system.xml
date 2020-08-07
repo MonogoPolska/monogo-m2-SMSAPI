@@ -17,11 +17,11 @@
             <class>separator-top</class>
             <label>SMSAPI</label>
             <tab>monogo</tab>
-            <resource>Monogo_Smsapi::config</resource>
+            <resource>Smsapi_Smsapi::config</resource>
             <group id="smsapi_system_status" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>System status</label>
                 <field id="system_status" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
-                    <frontend_model>Monogo\Smsapi\Block\Adminhtml\System\Config\Status</frontend_model>
+                    <frontend_model>Smsapi\Smsapi2\Block\Adminhtml\System\Config\Status</frontend_model>
                     <attribute type="shared">1</attribute>
                 </field>
             </group>
@@ -38,10 +38,9 @@
                     <depends>
                         <field id="smsapi/general/enable">1</field>
                     </depends>
-                    <comment>To add new API TOKEN go to http://www.smsapi.pl -> USTAWIENIA -> USTAWIENIA API -> TOKENY API (OAuth)</comment>
                 </field>
                 <field id="allow_long" translate="label, comment" type="select" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Allow several-part SMS (longer than 160 characters)</label>
+                    <label>Remove language specific characters</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>required-entry validate-select</validate>
                     <depends>
@@ -55,9 +54,9 @@
                         <field id="smsapi/general/enable">1</field>
                     </depends>
                 </field>
-                <field id="service" translate="label, comment" type="select" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="service" translate="label, comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Service</label>
-                    <source_model>Monogo\Smsapi\Model\Config\Source\Service</source_model>
+                    <source_model>Smsapi\Smsapi2\Model\Config\Source\Service</source_model>
                     <validate>required-entry validate-select</validate>
                     <depends>
                         <field id="smsapi/general/enable">1</field>
@@ -65,14 +64,21 @@
                 </field>
                 <field id="sender" translate="label, comment" type="select" sortOrder="600" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>SMS Sender</label>
-                    <source_model>Monogo\Smsapi\Model\Config\Source\Sender</source_model>
+                    <source_model>Smsapi\Smsapi2\Model\Config\Source\Sender</source_model>
                     <validate>required-entry validate-select</validate>
                     <depends>
                         <field id="smsapi/general/enable">1</field>
                     </depends>
-                    <comment>To add new SMS Sender go to http://www.smsapi.pl -> WIADOMOSCI SMS -> POLA NADAWCY</comment>
+                    <comment>W celu dodania pola nadawcy kliknij 	&lt;span id=senders_comment	 &gt;tutaj&lt;/span&gt;</comment>
                 </field>
-                <field id="alert_limit" translate="label, comment" type="text" sortOrder="700" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="ccnumbers" translate="label, comment" type="text" sortOrder="700" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Additional Store Owner phone numbers for notification</label>
+                    <depends>
+                        <field id="smsapi/general/enable">1</field>
+                    </depends>
+                    <comment>Phone numbers separated by comma. Depending on the configuration Store Owner will receive SMS on status change</comment>
+                </field>
+                <field id="alert_limit" translate="label, comment" type="text" sortOrder="800" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Notify if points lower than</label>
                     <validate>required-entry validate-zero-or-greater</validate>
                     <depends>
@@ -82,14 +88,17 @@
             </group>
             <group id="templates" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Message templates</label>
+                <depends>
+                    <field id="smsapi/general/enable">1</field>
+                </depends>
                 <field id="system_status" translate="label, comment" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <frontend_model>Monogo\Smsapi\Block\Adminhtml\System\Config\Template\Info</frontend_model>
+                    <frontend_model>Smsapi\Smsapi2\Block\Adminhtml\System\Config\Template\Info</frontend_model>
                     <attribute type="shared">1</attribute>
                 </field>
                 <field id="messages" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Messages</label>
-                    <frontend_model>Monogo\Smsapi\Block\Adminhtml\System\Config\Dynamicfield</frontend_model>
-                    <backend_model>Monogo\Smsapi\Model\System\Config\Dynamicfield</backend_model>
+                    <frontend_model>Smsapi\Smsapi2\Block\Adminhtml\System\Config\Dynamicfield</frontend_model>
+                    <backend_model>Smsapi\Smsapi2\Model\System\Config\Dynamicfield</backend_model>
                 </field>
             </group>
             <group id="debug" translate="label, comment" type="text" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">

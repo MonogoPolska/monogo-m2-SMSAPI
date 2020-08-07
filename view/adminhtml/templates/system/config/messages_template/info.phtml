@@ -3,13 +3,13 @@
  * Info template
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 ?>
 <?php
 /**
- * @var $block \Monogo\Smsapi\Block\Adminhtml\System\Config\Template\Info
+ * @var $block \Smsapi\Smsapi2\Block\Adminhtml\System\Config\Template\Info
  */
 ?>
 
@@ -50,6 +50,107 @@
                 aboutText = ' <?= __('(used variables) about') ?> ';
             }
             $('.' + id).text(aboutText + textValue.length).parent().show();
+        }
+
+        $(document).on('click', '#smsapi_templates_messages', function () {
+            var results = [];
+            var dups = [];
+            let rows = $(this).children().find('tr');
+            jQuery.each(rows, (rowindex, rowitem) => {
+                $(rowitem).css({'border': ''})
+                let row_selects = $(rowitem).children().find('select');
+                if ($(rowitem).attr('id') !== "undefined") {
+                    results.push([$(rowitem).attr('id')])
+                }
+                jQuery.each(row_selects, (index, item) => {
+                    let select_id = $(item).attr('id');
+                    if(select_id.includes('col_4')){
+                        var textareaId = select_id.replace("col_4","col_5");
+                        if ($(item) && $(item).val() == 0) {
+                            $(`#${textareaId}`).prop("required", false);
+                        } else {
+                            $(`#${textareaId}`).prop("required", true);
+                        }
+                    }
+
+                    if(select_id.includes('col_7')){
+                        var textareaId = select_id.replace("col_7","col_3");
+                        if ($(item) && $(item).val() == 0) {
+                            $(`#${textareaId}`).prop("required", false);
+                        } else {
+                            $(`#${textareaId}`).prop("required", true);
+                        }
+                    }
+
+                    if (select_id.includes('col_1') || select_id.includes('col_6')) {
+                        results[rowindex].push($(item).val());
+                    }
+                });
+            });
+
+            var rowsArray = getRowsArray(results);
+
+            rowsArray.forEach(function (item) {
+                var obj_value = Object.values(item);
+                if (!(dups.includes(obj_value))) {
+                    dups.push(obj_value);
+                }
+            });
+            getDuplicatesIDs(rowsArray, findDuplicatesInArray(dups));
+            isDuplitactes = findDuplicatesInArray(dups);
+
+            if (isDuplitactes.length !== 0) {
+                $("#save").attr("disabled", true);
+            } else {
+                $("#save").attr("disabled", false);
+
+            }
+        });
+
+
+        function getDuplicatesIDs(rowsarray, duplicate) {
+
+            rowsarray.forEach(function (item) {
+                let item_entry = Object.entries(item)
+                if (item_entry[0][1] == duplicate[0]) {
+                    trchilds = $(`#${item_entry[0][0]}`).css({'border': '2px solid red'});
+                }
+
+            });
+        }
+
+        function getRowsArray(array) {
+            var stash = [];
+            var objs = {};
+            array.forEach(function (item) {
+                var rowid = item[0];
+                let rowtext = item[1] + "_" + item[2];
+                if (rowtext !== "undefined_undefined") {
+                    stash.push({[rowid]: rowtext})
+                    objs.rowid = rowtext
+                }
+            });
+
+            return stash;
+        }
+
+        function findDuplicatesInArray(arra1) {
+            const object = {};
+            const result = [];
+
+            arra1.forEach(item => {
+                if (!object[item])
+                    object[item] = 0;
+                object[item] += 1;
+            })
+
+            for (const prop in object) {
+                if (object[prop] >= 2) {
+                    result.push(prop);
+                }
+            }
+
+            return result;
         }
     });
 </script>
