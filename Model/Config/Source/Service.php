@@ -13,6 +13,9 @@ use Magento\Framework\Data\OptionSourceInterface;
  */
 class Service implements OptionSourceInterface
 {
+    /**
+     * @var array
+     */
     protected $optionArray = [];
 
     protected $senderNames = null;

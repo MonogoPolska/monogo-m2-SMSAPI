@@ -21,6 +21,14 @@ class Status extends Field
 
     protected $client = null;
 
+    /**
+     * Status constructor.
+     *
+     * @param Context $context
+     * @param Config  $config
+     * @param Client  $client
+     * @param array   $data
+     */
     public function __construct(
         Context $context,
         Config $config,

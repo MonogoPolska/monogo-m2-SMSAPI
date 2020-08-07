@@ -44,6 +44,13 @@ class Sender implements OptionSourceInterface
      */
     protected $client = null;
 
+    /**
+     * Sender constructor.
+     *
+     * @param Log    $log
+     * @param Config $config
+     * @param Client $client
+     */
     public function __construct(
         Log $log,
         Config $config,

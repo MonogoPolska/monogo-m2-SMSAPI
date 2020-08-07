@@ -18,12 +18,24 @@ use Smsapi\Smsapi2\Helper\Log;
  */
 class Client
 {
+    /**
+     * @var Config
+     */
     private $config;
 
+    /**
+     * @var Log
+     */
     private $log;
 
+    /**
+     * @var array
+     */
     private $errors = [];
 
+    /**
+     * @var string[]
+     */
     private $services = [
         'com' => 'smsapiComService',
         'pl' => 'smsapiPlService',
@@ -134,7 +146,11 @@ class Client
 
         return [];
     }
-
+    
+    /**
+     * Destructor.
+     * Log errors
+     */
     public function __destruct()
     {
         if (!empty($this->getErrors())) {
