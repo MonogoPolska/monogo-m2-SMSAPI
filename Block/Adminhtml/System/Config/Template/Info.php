@@ -1,6 +1,6 @@
 <?php
 
-namespace Monogo\Smsapi\Block\Adminhtml\System\Config\Template;
+namespace Smsapi\Smsapi2\Block\Adminhtml\System\Config\Template;
 
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
@@ -9,7 +9,7 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
  * Info Block
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Info extends Field

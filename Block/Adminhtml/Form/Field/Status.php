@@ -1,6 +1,6 @@
 <?php
 
-namespace Monogo\Smsapi\Block\Adminhtml\Form\Field;
+namespace Smsapi\Smsapi2\Block\Adminhtml\Form\Field;
 
 use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
@@ -10,7 +10,7 @@ use Magento\Sales\Model\ResourceModel\Order\Status\CollectionFactory;
  * Status Block
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Status extends Select
@@ -48,7 +48,7 @@ class Status extends Select
      *
      * @return array
      */
-    protected function getStatusOptions()
+    public function getStatusOptions()
     {
         if ($this->statusOptions === null) {
             $this->statusOptions = [null => __('--Select status--')];

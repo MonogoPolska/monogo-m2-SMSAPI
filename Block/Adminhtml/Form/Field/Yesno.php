@@ -1,6 +1,6 @@
 <?php
 
-namespace Monogo\Smsapi\Block\Adminhtml\Form\Field;
+namespace Smsapi\Smsapi2\Block\Adminhtml\Form\Field;
 
 use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\Html\Select;
  * Yesno Block
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Yesno extends Select

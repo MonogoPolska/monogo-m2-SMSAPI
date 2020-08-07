@@ -1,18 +1,19 @@
 <?php
 
-namespace Monogo\Smsapi\Model\Api;
+namespace Smsapi\Smsapi2\Model\Api;
 
-use Monogo\Smsapi\Helper\Config;
-use Monogo\Smsapi\Helper\Log;
+use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
 use Smsapi\Client\Service\SmsapiComService;
 use Smsapi\Client\Service\SmsapiPlService;
 use Smsapi\Client\SmsapiHttpClient;
+use Smsapi\Smsapi2\Helper\Config;
+use Smsapi\Smsapi2\Helper\Log;
 
 /**
  * API Client
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Client
@@ -106,6 +107,27 @@ class Client
     {
         try {
             return $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
+        } catch (\Exception $e) {
+            $this->errors[] = $e->getMessage();
+        }
+    }
+
+    /**
+     * Send SMS message
+     *
+     * @param string $phoneNumber Phone number
+     * @param string $message     Message
+     *
+     * @return \Smsapi\Client\Feature\Sms\Data\Sms
+     */
+    public function send($phoneNumber, $message)
+    {
+        try {
+            $sms = SendSmsBag::withMessage($phoneNumber, $message);
+            $sms->normalize = $this->config->getAllowLong();
+            $sms->from = $this->config->getSender();
+            $sms->encoding = 'utf-8';
+            return $this->getService()->smsFeature()->sendSms($sms);
         } catch (\Exception $e) {
             $this->errors[] = $e->getMessage();
         }

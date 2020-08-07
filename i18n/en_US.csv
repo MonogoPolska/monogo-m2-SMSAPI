@@ -1,1 +1,2 @@
 "Authorization failed","Authorization failed - please check your API Token"
+"Points Limit Exceeded","Limit for SMS points exceeded. SMS Notifications will stop soon"

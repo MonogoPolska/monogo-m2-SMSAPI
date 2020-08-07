@@ -13,8 +13,8 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Monogo_Smsapi::global" title="SMSAPI" translate="title" sortOrder="200">
-                    <resource id="Monogo_Smsapi::config" title="Module configuration" translate="title" sortOrder="100"/>
+                <resource id="Smsapi_Smsapi2::global" title="SMSAPI" translate="title" sortOrder="200">
+                    <resource id="Smsapi_Smsapi2::config" title="Module configuration" translate="title" sortOrder="100"/>
                 </resource>
             </resource>
         </resources>
