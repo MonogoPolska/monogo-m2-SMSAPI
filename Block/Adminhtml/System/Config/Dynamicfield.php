@@ -223,7 +223,7 @@ class Dynamicfield extends AbstractFieldArray
         return '<textarea id="' . $this->_getCellInputElementId(
             '<%- _id %>',
             $columnName
-            ) .
+        ) .
             '"' .
             ' name="' .
             $inputName .

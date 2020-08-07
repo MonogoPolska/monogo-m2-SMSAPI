@@ -42,8 +42,7 @@ class InstallData implements InstallDataInterface
         EavSetup $eavSetupFactory,
         QuoteSetup $quoteSetupFactory,
         SalesSetup $salesSetupFactory
-    )
-    {
+    ) {
         $this->eavSetupFactory = $eavSetupFactory;
         $this->quoteSetupFactory = $quoteSetupFactory;
         $this->salesSetupFactory = $salesSetupFactory;
@@ -61,7 +60,7 @@ class InstallData implements InstallDataInterface
             'system' => false,
             'is_user_defined',
             'visible' => false,
-            'visible_on_front' => false
+            'visible_on_front' => false,
         ];
     }
 
@@ -98,13 +97,13 @@ class InstallData implements InstallDataInterface
             'quote_address',
             'sms_alert',
             ['type' => Table::TYPE_INTEGER,             'visible' => false,
-                'visible_on_front' => false]
+                'visible_on_front' => false, ]
         );
         $this->salesSetupFactory->addAttribute(
             'order_address',
             'sms_alert',
             ['type' => Table::TYPE_INTEGER,             'visible' => false,
-                'visible_on_front' => false]
+                'visible_on_front' => false, ]
         );
     }
 }

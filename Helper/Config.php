@@ -161,7 +161,7 @@ class Config extends AbstractHelper
                                 'send_cc' => $templateConfig['col_4'],
                                 'tmeplate_cc' => $templateConfig['col_5'],
                                 'status_from' => $templateConfig['col_6'],
-                                'send_to_client' => $templateConfig['col_7']
+                                'send_to_client' => $templateConfig['col_7'],
                             ];
                         }
                         if ($templateConfig['col_6'] == 'any') {
@@ -170,7 +170,7 @@ class Config extends AbstractHelper
                                 'send_cc' => $templateConfig['col_4'],
                                 'tmeplate_cc' => $templateConfig['col_5'],
                                 'status_from' => $templateConfig['col_6'],
-                                'send_to_client' => $templateConfig['col_7']
+                                'send_to_client' => $templateConfig['col_7'],
                             ];
                         }
                     }

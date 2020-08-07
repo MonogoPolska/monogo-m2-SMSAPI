@@ -2,12 +2,12 @@
 
 namespace Smsapi\Smsapi2\Model\Api;
 
-use Smsapi\Smsapi2\Helper\Config;
-use Smsapi\Smsapi2\Helper\Log;
 use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
 use Smsapi\Client\Service\SmsapiComService;
 use Smsapi\Client\Service\SmsapiPlService;
 use Smsapi\Client\SmsapiHttpClient;
+use Smsapi\Smsapi2\Helper\Config;
+use Smsapi\Smsapi2\Helper\Log;
 
 /**
  * API Client
