@@ -17,8 +17,14 @@ use Smsapi\Smsapi2\Model\Api\Client;
  */
 class Status extends Field
 {
+    /**
+     * @var Client
+     */
     protected $config = null;
 
+    /**
+     * @var Config
+     */
     protected $client = null;
 
     /**

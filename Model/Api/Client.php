@@ -146,7 +146,7 @@ class Client
 
         return [];
     }
-    
+
     /**
      * Destructor.
      * Log errors
