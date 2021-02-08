@@ -2,10 +2,11 @@
 
 namespace Smsapi\Smsapi2\Model\Api;
 
+use Smsapi\Smsapi2\Helper\OauthHelper;
 use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
 use Smsapi\Client\Service\SmsapiComService;
 use Smsapi\Client\Service\SmsapiPlService;
-use Smsapi\Client\SmsapiHttpClient;
+use Smsapi\Client\Curl\SmsapiHttpClient;
 use Smsapi\Smsapi2\Helper\Config;
 use Smsapi\Smsapi2\Helper\Log;
 
@@ -34,6 +35,11 @@ class Client
     private $errors = [];
 
     /**
+     * @var OauthHelper
+     */
+    private $oauthHelper;
+
+    /**
      * @var string[]
      */
     private $services = [
@@ -41,18 +47,25 @@ class Client
         'pl' => 'smsapiPlService',
     ];
 
+    private $curl;
+
     /**
      * Client constructor.
-     *
-     * @param Config $config Config
-     * @param Log    $log    Log
+     * @param Config $config
+     * @param Log $log
+     * @param OauthHelper $oauthHelper
      */
     public function __construct(
         Config $config,
-        Log $log
+        Log $log,
+        OauthHelper $oauthHelper,
+        \Magento\Framework\HTTP\Adapter\Curl $curl
+
     ) {
         $this->config = $config;
         $this->log = $log;
+        $this->oauthHelper = $oauthHelper;
+        $this->curl = $curl;
     }
 
     /**
@@ -63,8 +76,14 @@ class Client
     public function getService()
     {
         try {
-            return (new SmsapiHttpClient())
-                ->{$this->services[$this->config->getService()]}($this->config->getApiToken());
+            if($this->config->getOauthEnable()) {
+                return =  (new SmsapiHttpClient())
+                    ->{$this->services[$this->config->getService()]}($this->config->getOauthBearer());
+            }
+            if($this->config->getTokenEnable()) {
+                return (new SmsapiHttpClient())
+                    ->{$this->services[$this->config->getService()]}($this->config->getApiToken());
+            }
         } catch (\Exception $e) {
             $this->errors[] = $e->getMessage();
         }
@@ -122,8 +141,11 @@ class Client
      */
     public function send($phoneNumber, $message)
     {
+        $this->log->log('sms send init for '.$phoneNumber.' with message '.$message);
+
         try {
             $sms = SendSmsBag::withMessage($phoneNumber, $message);
+            $sms->partnerId = 'MAGENTO';
             $sms->normalize = $this->config->getAllowLong();
             $sms->from = $this->config->getSender();
             $sms->encoding = 'utf-8';
@@ -159,4 +181,5 @@ class Client
             }
         }
     }
+
 }

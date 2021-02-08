@@ -6,7 +6,9 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Smsapi\Smsapi2\Helper\Config;
+use Smsapi\Smsapi2\Helper\OauthHelper;
 use Smsapi\Smsapi2\Model\Api\Client;
+use Smsapi\Client\Service\SmsapiComService;
 
 /**
  * Status Block
@@ -27,22 +29,29 @@ class Status extends Field
      */
     protected $client = null;
 
+
+    protected $oauthHelper = null;
+
+
     /**
      * Status constructor.
      *
      * @param Context $context
      * @param Config  $config
      * @param Client  $client
+     * @param OauthHelper $oauthHelper
      * @param array   $data
      */
     public function __construct(
         Context $context,
         Config $config,
         Client $client,
+        OauthHelper $oauthHelper,
         array $data = []
     ) {
         $this->config = $config;
         $this->client = $client;
+        $this->oauthHelper = $oauthHelper;
         parent::__construct($context, $data);
     }
 
@@ -77,7 +86,7 @@ class Status extends Field
      */
     public function isValid()
     {
-        return $this->config->validateCredentials() && $this->client->ping()->smsapi;
+        return $this->config->validateCredentials() && $this->client->ping();
     }
 
     /**
@@ -103,5 +112,20 @@ class Status extends Field
     public function getService()
     {
         return $this->config->getService();
+    }
+
+    /**
+     * Get Is Valid
+     *
+     * @return bool
+     */
+    public function isOauthEnabled()
+    {
+        return $this->config->getOauthEnable();
+    }
+
+    public function getOauthUrl()
+    {
+        return (string)$this->oauthHelper->getOauthAuthorizationUrl();
     }
 }

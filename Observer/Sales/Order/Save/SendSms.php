@@ -194,6 +194,14 @@ class SendSms implements ObserverInterface
             . ' length: ' . $result->content->length . ' (' . $result->content->parts . ' parts)'
             . ' with status: ' . $result->status
         );
+
+        $this->log->log(
+            'Message ' . $result->id . ' for order '
+            . $result->number
+            . ' at ' . date('Y-m-d H:i:s', $result->dateSent->getTimestamp())
+            . ' length: ' . $result->content->length . ' (' . $result->content->parts . ' parts)'
+            . ' with status: ' . $result->status
+        );
     }
 
     /**

@@ -8,16 +8,13 @@ use Magento\Framework\Pricing\Helper\Data as Currency;
 use Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status;
 
 /**
- * Message helper
- *
- * @category SMSAPI
- * @package  Smsapi|SMSAPI
- * @author   Paweł Detka <pawel.detka@monogo.pl>
+ * Class Message
+ * @package Smsapi\Smsapi2\Helper
  */
 class Message extends AbstractHelper
 {
     /**
-     * @var Config
+     * @var \Smsapi\Smsapi2\Helper\Config
      */
     protected $config;
 
@@ -35,15 +32,15 @@ class Message extends AbstractHelper
      * Message constructor.
      *
      * @param Context  $context  Context
-     * @param Config   $config   Config
+     * @param \Smsapi\Smsapi2\Helper\Config   $config   Config
      * @param Currency $currency Currency
-     * @param Status   $status   Status
+     * @param \Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status   $status   Status
      */
     public function __construct(
         Context $context,
-        Config $config,
+        \Smsapi\Smsapi2\Helper\Config $config,
         Currency $currency,
-        Status $status
+        \Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status $status
     ) {
         $this->config = $config;
         $this->currency = $currency;

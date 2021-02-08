@@ -38,4 +38,6 @@
         <plugin name="monogo_smsapi_model_guestpaymentinformationmanagement"
                 type="Smsapi\Smsapi2\Plugin\Checkout\Model\GuestPaymentInformationManagement" sortOrder="10"/>
     </type>
+    <preference for="Smsapi\Smsapi2\Api\SmsapiCodeManagementInterface" type="Smsapi\Smsapi2\Model\SmsapiCodeManagement"/>
+
 </config>

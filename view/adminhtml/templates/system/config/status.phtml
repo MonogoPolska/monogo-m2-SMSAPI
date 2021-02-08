@@ -22,16 +22,28 @@
     }
 </style>
 
-<?php if (!$block->isValid()): ?>
+<?php if ($block->isOauthEnabled()): ?>
+
+<button id="oauth" title="<?= __('Logowanie via OAUTH') ?>" type="button"
+        class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+        data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false"
+        onclick="window.open('<?= $block->getOauthUrl() ?>')">
+            <span class="ui-button-text">
+               <span><?= __('Logowanie via OAUTH') ?></span>
+            </span>
+</button>
+
+<?php elseif (!$block->isValid()): ?>
     <div class="smsapi_system_status_container_register">
         <button id="gotodashboard" title="<?= __('Go to SMSAPI dashboard') ?>" type="button"
                 class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                 data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false"
-                onclick="window.open('https://www.smsapi.pl/oauth')">
+                onclick="window.open('https://www.smsapi.pl/rejestracja')">
             <span class="ui-button-text">
                <span><?= __('Register in SMSAPI') ?></span>
             </span>
         </button>
+
     </div>
 <?php elseif (empty($block->getProfile()) || !empty($block->getErrors())): ?>
 
@@ -56,6 +68,8 @@
                <span><?= __('To generate key click here') ?></span>
             </span>
         </button>
+
+
     </div>
 
 <?php endif; ?>

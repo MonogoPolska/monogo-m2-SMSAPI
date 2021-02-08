@@ -26,16 +26,15 @@ class Log extends AbstractHelper
     protected $config = null;
 
     /**
-     * Data constructor.
-     *
-     * @param Context $context Context
-     * @param Logger  $logger  Logger
-     * @param Config  $config  Config
+     * Log constructor.
+     * @param Context $context
+     * @param Logger $logger
+     * @param \Smsapi\Smsapi2\Helper\Config $config
      */
     public function __construct(
         Context $context,
         Logger $logger,
-        Config $config
+        \Smsapi\Smsapi2\Helper\Config $config
     ) {
         $this->logger = $logger;
         $this->config = $config;

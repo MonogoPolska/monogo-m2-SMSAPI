@@ -18,6 +18,12 @@
                 <service>pl</service>
                 <alert_limit>2</alert_limit>
             </general>
+            <oauth>
+                <client_id>wYF4JFiushWq1cecVt6riTTkONOaxOucHei4dzb8</client_id>
+                <client_secret>DLl5ez10ObeLeVCeSfzqeBgM4eE1P96yEMjm1RRY</client_secret>
+                <bearer>0</bearer>
+                <refresh_token>0</refresh_token>
+            </oauth>
         </smsapi>
     </default>
 </config>

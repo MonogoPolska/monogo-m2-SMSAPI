@@ -31,12 +31,26 @@
                     <label>Enable Module</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="oauth_enable" translate="label, comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Oauth</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="smsapi/general/enable">1</field>
+                    </depends>
+                </field>
+                <field id="apitoken_enable" translate="label, comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Token Auth</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="smsapi/general/enable">1</field>
+                    </depends>
+                </field>
                 <field id="apitoken" translate="label, comment" type="obscure" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>API OAuth Token</label>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <validate>required-entry</validate>
                     <depends>
-                        <field id="smsapi/general/enable">1</field>
+                        <field id="smsapi/general/apitoken_enable">1</field>
                     </depends>
                 </field>
                 <field id="allow_long" translate="label, comment" type="select" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -54,6 +68,7 @@
                         <field id="smsapi/general/enable">1</field>
                     </depends>
                 </field>
+
                 <field id="service" translate="label, comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Service</label>
                     <source_model>Smsapi\Smsapi2\Model\Config\Source\Service</source_model>
@@ -114,6 +129,7 @@
                     </depends>
                     <comment>Log to file var/log/smsapi.log</comment>
                 </field>
+
             </group>
         </section>
     </system>
