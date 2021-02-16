@@ -23,10 +23,10 @@ class InventoryGrid extends \Magento\Backend\Block\Widget\Grid\Extended
     protected $_inventoryFactory;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context                      $context
-     * @param \Magento\Backend\Helper\Data                                 $backendHelper
+     * @param \Magento\Backend\Block\Template\Context                         $context
+     * @param \Magento\Backend\Helper\Data                                    $backendHelper
      * @param \Smsapi\Smsapi2\Model\ResourceModel\Inventory\CollectionFactory $inventoryFactory,
-     * @param array                                                        $data
+     * @param array                                                           $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,

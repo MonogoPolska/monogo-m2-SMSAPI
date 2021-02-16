@@ -295,6 +295,4 @@ class Config extends AbstractHelper
     {
         return $this->getConfig(self::CONFIG_PATH . self::TOKEN_ENABLE);
     }
-
-
 }

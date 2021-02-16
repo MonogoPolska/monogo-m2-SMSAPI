@@ -6,12 +6,10 @@ namespace Smsapi\Smsapi2\Api;
 
 interface SmsapiCodeManagementInterface
 {
-
     /**
      * GET for smsapiCode api
-     * @param string $code
+     * @param  string $code
      * @return string
      */
     public function getSmsapiCode($code);
 }
-

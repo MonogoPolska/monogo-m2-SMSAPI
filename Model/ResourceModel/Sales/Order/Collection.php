@@ -68,13 +68,13 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
         return $this;
     }
 
-  /**
-     * Prepare for orders with items cost report
-     *
-     * @param $storeIds
-     * @param array $filter
-     * @return $this
-     */
+    /**
+       * Prepare for orders with items cost report
+       *
+       * @param $storeIds
+       * @param  array $filter
+       * @return $this
+       */
     public function prepareForWithItemsExportReport($storeIds, $filter = [])
     {
         $select = $this->getSelect();
@@ -116,10 +116,10 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
             'method' => 'sfop.method',
             'shipping_country' => 'shipping_address.country_id',
         ])
-            ->joinLeft(array('sfop' => $connection->getTableName('sales_order_payment')), 'main_table.entity_id=sfop.parent_id', null)
-            ->joinLeft(array('shipping_address' => $connection->getTableName('sales_order_address')), 'main_table.entity_id=shipping_address.parent_id AND shipping_address.address_type="shipping"', null)
-            ->join(array('cs' => $connection->getTableName('store')), 'main_table.store_id=cs.store_id', null)
-            ->join(array('cw' => $connection->getTableName('store_website')), 'cs.website_id=cw.website_id', null)
+            ->joinLeft(['sfop' => $connection->getTableName('sales_order_payment')], 'main_table.entity_id=sfop.parent_id', null)
+            ->joinLeft(['shipping_address' => $connection->getTableName('sales_order_address')], 'main_table.entity_id=shipping_address.parent_id AND shipping_address.address_type="shipping"', null)
+            ->join(['cs' => $connection->getTableName('store')], 'main_table.store_id=cs.store_id', null)
+            ->join(['cw' => $connection->getTableName('store_website')], 'cs.website_id=cw.website_id', null)
             ->order('main_table.created_at');
         if (isset($filter['website_id']) && $filter['website_id']) {
             $select->where('cs.website_id =? ', $filter['website_id']);

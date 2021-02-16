@@ -1,23 +1,19 @@
 <?php
 
-
 namespace Smsapi\Smsapi2\Helper;
 
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Store\Model\ScopeInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Smsapi\Smsapi2\Helper\Log;
-use Magento\Framework\App\PageCache\Version;
-use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Cache\Frontend\Pool;
-
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Helper\AbstractHelper;
 
 class OauthHelper extends AbstractHelper
 {
     /**
-     * @var  \Smsapi\Smsapi2\Helper\Log
+     * @var \Smsapi\Smsapi2\Helper\Log
      */
     protected $log;
+
     /**
      * @var \Magento\Framework\HTTP\Adapter\Curl
      */
@@ -56,8 +52,8 @@ class OauthHelper extends AbstractHelper
     /**
      * Constructor
      *
-     * @param \Smsapi\Smsapi2\Helper\Log $log
-     * @param \Magento\Framework\HTTP\Adapter\Curl $curl
+     * @param \Smsapi\Smsapi2\Helper\Log                  $log
+     * @param \Magento\Framework\HTTP\Adapter\Curl        $curl
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $datetime
      */
     public function __construct(
@@ -69,9 +65,7 @@ class OauthHelper extends AbstractHelper
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         TypeListInterface $cacheTypeList,
         Pool $cacheFrontendPool
-
-    )
-    {
+    ) {
         $this->log = $log;
         $this->curl = $curl;
         $this->datetime = $datetime;
@@ -80,14 +74,11 @@ class OauthHelper extends AbstractHelper
         $this->storeManager = $storeManager;
         $this->cacheTypeList = $cacheTypeList;
         $this->cacheFrontendPool = $cacheFrontendPool;
-
     }
-
 
     public function authorize($code)
     {
         $this->oauthGetToken($code);
-
     }
 
     /**
@@ -102,7 +93,7 @@ class OauthHelper extends AbstractHelper
             'code' => $code,
             'grant_type' => 'authorization_code',
             'redirect_uri' => $this->prepareRedirectUrl(),
-            'scope' => 'sms'
+            'scope' => 'sms',
         ];
         $headers = [];
         $this->curl->write('POST', 'https://ssl.smsapi.pl/api/oauth/token', '1.1', $headers, $authArray);
@@ -124,7 +115,6 @@ class OauthHelper extends AbstractHelper
         }
         return false;
     }
-
 
     public function setOauthBearer($value)
     {
@@ -166,7 +156,6 @@ class OauthHelper extends AbstractHelper
     {
         $base = 'https://ssl.smsapi.pl/oauth/access?';
         $params = ['client_id' => $this->config->getOauthClientId(), 'redirect_uri' => $this->prepareRedirectUrl(),'scope'=>'sms'];
-        return $base.http_build_query($params);
+        return $base . http_build_query($params);
     }
-
 }

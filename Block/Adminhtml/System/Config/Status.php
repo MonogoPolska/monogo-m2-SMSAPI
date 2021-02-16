@@ -8,7 +8,6 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 use Smsapi\Smsapi2\Helper\Config;
 use Smsapi\Smsapi2\Helper\OauthHelper;
 use Smsapi\Smsapi2\Model\Api\Client;
-use Smsapi\Client\Service\SmsapiComService;
 
 /**
  * Status Block
@@ -29,18 +28,16 @@ class Status extends Field
      */
     protected $client = null;
 
-
     protected $oauthHelper = null;
-
 
     /**
      * Status constructor.
      *
-     * @param Context $context
-     * @param Config  $config
-     * @param Client  $client
+     * @param Context     $context
+     * @param Config      $config
+     * @param Client      $client
      * @param OauthHelper $oauthHelper
-     * @param array   $data
+     * @param array       $data
      */
     public function __construct(
         Context $context,

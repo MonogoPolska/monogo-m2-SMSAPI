@@ -27,8 +27,8 @@ class Log extends AbstractHelper
 
     /**
      * Log constructor.
-     * @param Context $context
-     * @param Logger $logger
+     * @param Context                       $context
+     * @param Logger                        $logger
      * @param \Smsapi\Smsapi2\Helper\Config $config
      */
     public function __construct(

@@ -2,13 +2,13 @@
 
 namespace Smsapi\Smsapi2\Model\Api;
 
-use Smsapi\Smsapi2\Helper\OauthHelper;
+use Smsapi\Client\Curl\SmsapiHttpClient;
 use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
 use Smsapi\Client\Service\SmsapiComService;
 use Smsapi\Client\Service\SmsapiPlService;
-use Smsapi\Client\Curl\SmsapiHttpClient;
 use Smsapi\Smsapi2\Helper\Config;
 use Smsapi\Smsapi2\Helper\Log;
+use Smsapi\Smsapi2\Helper\OauthHelper;
 
 /**
  * API Client
@@ -51,8 +51,8 @@ class Client
 
     /**
      * Client constructor.
-     * @param Config $config
-     * @param Log $log
+     * @param Config      $config
+     * @param Log         $log
      * @param OauthHelper $oauthHelper
      */
     public function __construct(
@@ -60,7 +60,6 @@ class Client
         Log $log,
         OauthHelper $oauthHelper,
         \Magento\Framework\HTTP\Adapter\Curl $curl
-
     ) {
         $this->config = $config;
         $this->log = $log;
@@ -76,11 +75,11 @@ class Client
     public function getService()
     {
         try {
-            if($this->config->getOauthEnable()) {
-                return =  (new SmsapiHttpClient())
+            if ($this->config->getOauthEnable()) {
+                return (new SmsapiHttpClient())
                     ->{$this->services[$this->config->getService()]}($this->config->getOauthBearer());
             }
-            if($this->config->getTokenEnable()) {
+            if ($this->config->getTokenEnable()) {
                 return (new SmsapiHttpClient())
                     ->{$this->services[$this->config->getService()]}($this->config->getApiToken());
             }
@@ -141,7 +140,7 @@ class Client
      */
     public function send($phoneNumber, $message)
     {
-        $this->log->log('sms send init for '.$phoneNumber.' with message '.$message);
+        $this->log->log('sms send init for ' . $phoneNumber . ' with message ' . $message);
 
         try {
             $sms = SendSmsBag::withMessage($phoneNumber, $message);
@@ -181,5 +180,4 @@ class Client
             }
         }
     }
-
 }

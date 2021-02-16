@@ -20,10 +20,10 @@ class Family extends AbstractReport
     public function execute()
     {
         $this->_initAction()->_setActiveMenu(
-                'Smsapi_Smsapi2::reports_sales_family'
+            'Smsapi_Smsapi2::reports_sales_family'
         )->_addBreadcrumb(
-                __('Sales By Family Report'),
-                __('Sales By Family Report')
+            __('Sales By Family Report'),
+            __('Sales By Family Report')
         );
 
         $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Sales By Family Report'));

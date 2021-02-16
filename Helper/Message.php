@@ -31,10 +31,10 @@ class Message extends AbstractHelper
     /**
      * Message constructor.
      *
-     * @param Context  $context  Context
-     * @param \Smsapi\Smsapi2\Helper\Config   $config   Config
-     * @param Currency $currency Currency
-     * @param \Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status   $status   Status
+     * @param Context                                           $context  Context
+     * @param \Smsapi\Smsapi2\Helper\Config                     $config   Config
+     * @param Currency                                          $currency Currency
+     * @param \Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status $status   Status
      */
     public function __construct(
         Context $context,

@@ -2,8 +2,8 @@
 
 namespace Smsapi\Smsapi2\Block\Sales\OrderitemsExport\Grid\Renderer;
 
+use Magento\Backend\Block\Context;
 use Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer;
-use \Magento\Backend\Block\Context;
 use Magento\Framework\DataObject;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
@@ -14,7 +14,6 @@ use Magento\Sales\Api\OrderRepositoryInterface;
  */
 class Options extends AbstractRenderer
 {
-
     /**
      * @var OrderRepositoryInterface
      */
@@ -32,13 +31,13 @@ class Options extends AbstractRenderer
     /**
      *  Renders grid column
      *
-     * @param DataObject $row
+     * @param  DataObject   $row
      * @return mixed|string
      */
-    public function render(DataObject $row) {
+    public function render(DataObject $row)
+    {
         try {
             if ($row->getData('row_total') == 0) {
-
                 $data = $row->getData('item_id');
                 $item = $this->orderRepository->get($data);
                 if (isset($item->getProductOptions()['options']) && sizeof($item->getProductOptions()['options'])>0) {
@@ -53,11 +52,8 @@ class Options extends AbstractRenderer
                     }
                 }
             }
-
         } catch (\Exception $e) {
             return "";
         }
-
     }
-
 }

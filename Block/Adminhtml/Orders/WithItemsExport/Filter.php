@@ -63,11 +63,12 @@ class Filter extends Form
         return $this;
     }
 
-    public function getWebsiteNames($addAll = false) {
+    public function getWebsiteNames($addAll = false)
+    {
         $websiteList = [];
         $websites = $this->_storeManager->getWebsites();
         foreach ($websites as $website) {
-                $websiteList[$website->getId()] = $website->getName();
+            $websiteList[$website->getId()] = $website->getName();
         }
         return $websiteList;
     }
