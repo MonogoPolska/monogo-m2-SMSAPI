@@ -4,7 +4,7 @@
     "require": {
         "magento/framework": "102.0.*",
         "php": ">=7.0.13",
-        "smsapi/php-client": "^2.1"
+        "smsapi/php-client": "^3.0"
     },
     "type": "magento2-module",
     "version": "1.0.3",
