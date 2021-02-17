@@ -43,6 +43,8 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="smsapi/general/enable">1</field>
+                        <field id="smsapi/general/oauth_enable">0</field>
+
                     </depends>
                 </field>
                 <field id="apitoken" translate="label, comment" type="obscure" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -51,6 +53,8 @@
                     <validate>required-entry</validate>
                     <depends>
                         <field id="smsapi/general/apitoken_enable">1</field>
+                        <field id="smsapi/general/oauth_enable">0</field>
+
                     </depends>
                 </field>
                 <field id="allow_long" translate="label, comment" type="select" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -69,6 +73,17 @@
                     </depends>
                 </field>
 
+
+                <field id="sender" translate="label, comment" type="select" sortOrder="600" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>SMS Sender</label>
+                    <source_model>Smsapi\Smsapi2\Model\Config\Source\Sender</source_model>
+                    <validate>required-entry validate-select</validate>
+                    <depends>
+                        <field id="smsapi/general/apitoken_enable">1</field>
+                        <field id="smsapi/general/oauth_enable">0</field>
+                    </depends>
+                    <comment>W celu dodania pola nadawcy kliknij 	&lt;span id=senders_comment	 &gt;tutaj&lt;/span&gt;</comment>
+                </field>
                 <field id="service" translate="label, comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Service</label>
                     <source_model>Smsapi\Smsapi2\Model\Config\Source\Service</source_model>
@@ -76,15 +91,6 @@
                     <depends>
                         <field id="smsapi/general/enable">1</field>
                     </depends>
-                </field>
-                <field id="sender" translate="label, comment" type="select" sortOrder="600" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>SMS Sender</label>
-                    <source_model>Smsapi\Smsapi2\Model\Config\Source\Sender</source_model>
-                    <validate>required-entry validate-select</validate>
-                    <depends>
-                        <field id="smsapi/general/enable">1</field>
-                    </depends>
-                    <comment>W celu dodania pola nadawcy kliknij 	&lt;span id=senders_comment	 &gt;tutaj&lt;/span&gt;</comment>
                 </field>
                 <field id="ccnumbers" translate="label, comment" type="text" sortOrder="700" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Additional Store Owner phone numbers for notification</label>

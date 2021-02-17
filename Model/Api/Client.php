@@ -84,7 +84,7 @@ class Client
                     ->{$this->services[$this->config->getService()]}($this->config->getApiToken());
             }
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'getService'.$e->getMessage();
         }
     }
 
@@ -98,7 +98,7 @@ class Client
         try {
             return $this->getService()->pingFeature()->ping();
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'ping'.$e->getMessage();
         }
     }
 
@@ -112,7 +112,7 @@ class Client
         try {
             return $this->getService()->profileFeature()->findProfile();
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'getProfile '.$e->getMessage();
         }
     }
 
@@ -124,9 +124,9 @@ class Client
     public function getSenders()
     {
         try {
-            return $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
+            return $this->config->getTokenEnable() ? $this->getService()->smsFeature()->sendernameFeature()->findSendernames() : [];
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'getSenders '.$e->getMessage();
         }
     }
 
@@ -146,11 +146,13 @@ class Client
             $sms = SendSmsBag::withMessage($phoneNumber, $message);
             $sms->partnerId = 'MAGENTO';
             $sms->normalize = $this->config->getAllowLong();
-            $sms->from = $this->config->getSender();
+            if(!$this->config->getOauthBearer()) {
+                $sms->from = $this->config->getSender();
+            }
             $sms->encoding = 'utf-8';
             return $this->getService()->smsFeature()->sendSms($sms);
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'sendSms '.$e->getMessage();
         }
     }
 
