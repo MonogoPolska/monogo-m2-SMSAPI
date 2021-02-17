@@ -124,7 +124,7 @@ class Client
     public function getSenders()
     {
         try {
-            return $this->config->getTokenEnable() ? $this->getService()->smsFeature()->sendernameFeature()->findSendernames() : [];
+            return $this->config->getApiToken() ? $this->getService()->smsFeature()->sendernameFeature()->findSendernames() : [];
         } catch (\Exception $e) {
             $this->errors[] = 'getSenders '.$e->getMessage();
         }
