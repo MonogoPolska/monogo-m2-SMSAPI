@@ -93,7 +93,7 @@ class OauthHelper extends AbstractHelper
             'code' => $code,
             'grant_type' => 'authorization_code',
             'redirect_uri' => $this->prepareRedirectUrl(),
-            'scope' => 'sms',
+            'scope' => 'sms,sms_sender,profile',
         ];
         $headers = [];
         $this->curl->write('POST', 'https://ssl.smsapi.pl/api/oauth/token', '1.1', $headers, $authArray);
@@ -154,8 +154,8 @@ class OauthHelper extends AbstractHelper
 
     public function getOauthAuthorizationUrl()
     {
-        $base = 'https://ssl.smsapi.pl/oauth/access?';
-        $params = ['client_id' => $this->config->getOauthClientId(), 'redirect_uri' => $this->prepareRedirectUrl(),'scope'=>'sms'];
+        $base = 'https://smsapi.io/oauth/access?';
+        $params = ['client_id' => $this->config->getOauthClientId(), 'redirect_uri' => $this->prepareRedirectUrl(),'scope'=>'sms,sms_sender,profile'];
         return $base . http_build_query($params);
     }
 }

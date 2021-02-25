@@ -11,7 +11,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <tab id="monogo" translate="label, comment" sortOrder="9000" class="monogo-tab">
-            <label>Monogo</label>
+            <label>SMSAPI</label>
         </tab>
         <section id="smsapi" translate="label, comment" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
@@ -77,10 +77,8 @@
                 <field id="sender" translate="label, comment" type="select" sortOrder="600" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>SMS Sender</label>
                     <source_model>Smsapi\Smsapi2\Model\Config\Source\Sender</source_model>
-                    <validate>required-entry validate-select</validate>
                     <depends>
-                        <field id="smsapi/general/apitoken_enable">1</field>
-                        <field id="smsapi/general/oauth_enable">0</field>
+                        <field id="smsapi/general/enable">1</field>
                     </depends>
                     <comment>W celu dodania pola nadawcy kliknij 	&lt;span id=senders_comment	 &gt;tutaj&lt;/span&gt;</comment>
                 </field>
@@ -90,6 +88,8 @@
                     <validate>required-entry validate-select</validate>
                     <depends>
                         <field id="smsapi/general/enable">1</field>
+                        <field id="smsapi/general/apitoken_enable">1</field>
+
                     </depends>
                 </field>
                 <field id="ccnumbers" translate="label, comment" type="text" sortOrder="700" showInDefault="1" showInWebsite="1" showInStore="1">

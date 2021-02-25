@@ -22,7 +22,7 @@
     }
 </style>
 
-<?php if ($block->isOauthEnabled()): ?>
+<?php if ($block->isOauthEnabled() && empty($block->isBearerSet())): ?>
 
 <button id="oauth" title="<?= __('Logowanie via OAUTH') ?>" type="button"
         class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
@@ -33,7 +33,7 @@
             </span>
 </button>
 
-<?php elseif (!$block->isValid()): ?>
+<?php elseif (!$block->isValid() && $block->isTokenEnabled()): ?>
     <div class="smsapi_system_status_container_register">
         <button id="gotodashboard" title="<?= __('Go to SMSAPI dashboard') ?>" type="button"
                 class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
@@ -60,7 +60,9 @@
         <span style="font-weight: bold; color:green"> <?= __('Account') ?>: </span><span><?= $profile->name ?></span><br/>
         <span style="font-weight: bold; color:green"> <?= __('Points') ?>: </span><span><?= $profile->points ?></span><br/>
         <span><a href="https://ssl.smsapi.pl/"></a></span><br/>
-        <button id="gotodashboard" title="<?= __('Go to SMSAPI dashboard') ?>" type="button"
+        <?php if (!$block->isOauthEnabled()): ?>
+
+            <button id="gotodashboard" title="<?= __('Go to SMSAPI dashboard') ?>" type="button"
                 class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                 data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false"
                 onclick="window.open('https://ssl.smsapi.<?= $block->getService() ?>/react/oauth/manage')">
@@ -68,6 +70,7 @@
                <span><?= __('To generate key click here') ?></span>
             </span>
         </button>
+        <?php endif; ?>
 
 
     </div>

@@ -14,7 +14,8 @@
             <general>
                 <enable>0</enable>
                 <apitoken backend_model="Magento\Config\Model\Config\Backend\Encrypted"></apitoken>
-                <allow_long>0</allow_long>
+                <oauth_enable>1</oauth_enable>
+                <apitoken_enable>0</apitoken_enable>
                 <service>pl</service>
                 <alert_limit>2</alert_limit>
             </general>

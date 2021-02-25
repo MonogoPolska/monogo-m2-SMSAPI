@@ -121,8 +121,37 @@ class Status extends Field
         return $this->config->getOauthEnable();
     }
 
+    /**
+     * Get Is Valid
+     *
+     * @return bool
+     */
+    public function isTokenEnabled()
+    {
+        return $this->config->getTokenEnable();
+    }
+
+    /**
+     * @return string
+     */
     public function getOauthUrl()
     {
         return (string)$this->oauthHelper->getOauthAuthorizationUrl();
+    }
+
+    /**
+     * @return string
+     */
+    public function isBearerSet()
+    {
+        return $this->config->getOauthBearer();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTokenSet()
+    {
+        return empty($this->config->getApiToken());
     }
 }

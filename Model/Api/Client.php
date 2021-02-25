@@ -77,7 +77,7 @@ class Client
         try {
             if ($this->config->getOauthEnable()) {
                 return (new SmsapiHttpClient())
-                    ->{$this->services[$this->config->getService()]}($this->config->getOauthBearer());
+                    ->smsapiPlService($this->config->getOauthBearer());
             }
             if ($this->config->getTokenEnable()) {
                 return (new SmsapiHttpClient())
@@ -124,7 +124,8 @@ class Client
     public function getSenders()
     {
         try {
-            return $this->config->getApiToken() ? $this->getService()->smsFeature()->sendernameFeature()->findSendernames() : [];
+            $senders = $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
+            return $senders;
         } catch (\Exception $e) {
             $this->errors[] = 'getSenders '.$e->getMessage();
         }
