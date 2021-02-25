@@ -7,7 +7,7 @@
         "smsapi/php-client": "^3.0"
     },
     "type": "magento2-module",
-    "version": "1.0.3",
+    "version": "1.0.4-dev",
     "license": "Apache-2.0",
     "keywords": ["Magento 2", "smsapi", "smsapi.pl", "smsapi.com"],
     "authors": [

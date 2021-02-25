@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this module will be documented in this file.
 
+## [1.0.3-1.0.4]
+Oauth Authorization
+
 ## [1.0.2] 
 Namespace changes due Magneto Marketplace requirements
 
