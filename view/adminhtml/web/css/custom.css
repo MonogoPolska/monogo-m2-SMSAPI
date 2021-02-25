@@ -1,0 +1,7 @@
+
+#ordersWithItemsExportGrid_table .col-oms_created_at {
+    min-width: 135px;
+}
+#ordersWithItemsExportGrid_table .col-created_at  {
+    min-width: 91px;
+}

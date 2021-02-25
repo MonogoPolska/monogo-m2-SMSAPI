@@ -1,15 +1,16 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
-    <type name="Monogo\Smsapi\Logger\Handler">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Smsapi\Smsapi2\Logger\Handler">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
         </arguments>
     </type>
-    <type name="Monogo\Smsapi\Logger\Logger">
+    <type name="Smsapi\Smsapi2\Logger\Logger">
         <arguments>
-            <argument name="name" xsi:type="string">SMSAPI</argument>
+            <argument name="name" xsi:type="string"></argument>
             <argument name="handlers" xsi:type="array">
-                <item name="system" xsi:type="object">Monogo\Smsapi\Logger\Handler</item>
+                <item name="system" xsi:type="object">Smsapi\Smsapi2\Logger\Handler</item>
             </argument>
         </arguments>
     </type>
@@ -20,4 +21,23 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Quote\Model\Quote\Address\ToOrderAddress">
+        <plugin name="monogo_smsapi_toorderaddress"
+                type="Smsapi\Smsapi2\Plugin\Quote\Model\Quote\Address\ToOrderAddress" sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="monogo_smsapi_shippinginformationmanagement"
+                type="Smsapi\Smsapi2\Plugin\Checkout\Model\ShippingInformationManagement" sortOrder="10"/>
+    </type>
+    <type name="Magento\Checkout\Model\PaymentInformationManagement">
+        <plugin name="monogo_smsapi_model_paymentinformationmanagement"
+                type="Smsapi\Smsapi2\Plugin\Checkout\Model\PaymentInformationManagement" sortOrder="10"/>
+    </type>
+    <type name="Magento\Checkout\Model\GuestPaymentInformationManagement">
+        <plugin name="monogo_smsapi_model_guestpaymentinformationmanagement"
+                type="Smsapi\Smsapi2\Plugin\Checkout\Model\GuestPaymentInformationManagement" sortOrder="10"/>
+    </type>
+    <preference for="Smsapi\Smsapi2\Api\SmsapiCodeManagementInterface" type="Smsapi\Smsapi2\Model\SmsapiCodeManagement"/>
+
 </config>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<!--
+/**
+ * @author Monogo
+ * @copyright Copyright (c) 2019 Monogo (https://monogo.pl)
+ * @package Monogo_Smsapi
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name='sales_order_save_after'>
+        <observer name='send_sms_message' instance='Smsapi\Smsapi2\Observer\Sales\Order\Save\SendSms'/>
+    </event>
+</config>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Smsapi_Smsapi2::report" resource="Smsapi_Smsapi2::admin_report" module="Smsapi_Smsapi2" title="SMSAPI Reports" parent="Magento_Reports::report" />
+
+
+        <add id="Smsapi_Smsapi2::orders_with_items_export_report" resource="Smsapi_Smsapi2::orders_with_items_export_report" module="Smsapi_Smsapi2" title="SMSAPI Export" sortOrder="95" action="smsapi/orders/withitemsexport" parent="Smsapi_Smsapi2::report"/>
+    </menu>
+</config>

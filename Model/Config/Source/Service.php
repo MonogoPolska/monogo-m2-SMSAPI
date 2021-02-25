@@ -1,6 +1,6 @@
 <?php
 
-namespace Monogo\Smsapi\Model\Config\Source;
+namespace Smsapi\Smsapi2\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
@@ -8,7 +8,7 @@ use Magento\Framework\Data\OptionSourceInterface;
  * Service source model
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Service implements OptionSourceInterface
@@ -17,6 +17,8 @@ class Service implements OptionSourceInterface
      * @var array
      */
     protected $optionArray = [];
+
+    protected $senderNames = null;
 
     /**
      * Options getter

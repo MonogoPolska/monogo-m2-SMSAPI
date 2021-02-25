@@ -1,48 +1,54 @@
 <?php
 
-namespace Monogo\Smsapi\Block\Adminhtml\System\Config;
+namespace Smsapi\Smsapi2\Block\Adminhtml\System\Config;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use Monogo\Smsapi\Helper\Config;
-use Monogo\Smsapi\Model\Api\Client;
+use Smsapi\Smsapi2\Helper\Config;
+use Smsapi\Smsapi2\Helper\OauthHelper;
+use Smsapi\Smsapi2\Model\Api\Client;
 
 /**
  * Status Block
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Status extends Field
 {
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
      * @var Client
      */
-    protected $client;
+    protected $config = null;
+
+    /**
+     * @var Config
+     */
+    protected $client = null;
+
+    protected $oauthHelper = null;
 
     /**
      * Status constructor.
      *
-     * @param Context $context
-     * @param Config  $config
-     * @param Client  $client
-     * @param array   $data
+     * @param Context     $context
+     * @param Config      $config
+     * @param Client      $client
+     * @param OauthHelper $oauthHelper
+     * @param array       $data
      */
     public function __construct(
         Context $context,
         Config $config,
         Client $client,
+        OauthHelper $oauthHelper,
         array $data = []
     ) {
         $this->config = $config;
         $this->client = $client;
+        $this->oauthHelper = $oauthHelper;
         parent::__construct($context, $data);
     }
 
@@ -77,7 +83,7 @@ class Status extends Field
      */
     public function isValid()
     {
-        return $this->config->validateCredentials() && $this->client->ping()->smsapi;
+        return $this->config->validateCredentials() && $this->client->ping();
     }
 
     /**
@@ -98,5 +104,54 @@ class Status extends Field
     public function getErrors()
     {
         return $this->client->getErrors();
+    }
+
+    public function getService()
+    {
+        return $this->config->getService();
+    }
+
+    /**
+     * Get Is Valid
+     *
+     * @return bool
+     */
+    public function isOauthEnabled()
+    {
+        return $this->config->getOauthEnable();
+    }
+
+    /**
+     * Get Is Valid
+     *
+     * @return bool
+     */
+    public function isTokenEnabled()
+    {
+        return $this->config->getTokenEnable();
+    }
+
+    /**
+     * @return string
+     */
+    public function getOauthUrl()
+    {
+        return (string)$this->oauthHelper->getOauthAuthorizationUrl();
+    }
+
+    /**
+     * @return string
+     */
+    public function isBearerSet()
+    {
+        return $this->config->getOauthBearer();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTokenSet()
+    {
+        return empty($this->config->getApiToken());
     }
 }

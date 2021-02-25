@@ -1,6 +1,6 @@
 <?php
 
-namespace Monogo\Smsapi\Block\Adminhtml\System\Config;
+namespace Smsapi\Smsapi2\Block\Adminhtml\System\Config;
 
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 
@@ -8,7 +8,7 @@ use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
  * Dynamicfield Block
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Dynamicfield extends AbstractFieldArray
@@ -21,7 +21,17 @@ class Dynamicfield extends AbstractFieldArray
     /**
      * @var \Magento\Framework\View\Element\Html\Select
      */
+    private $statusFromRenderer;
+
+    /**
+     * @var \Magento\Framework\View\Element\Html\Select
+     */
     private $yesnoRenderer;
+
+    /**
+     * @var \Magento\Framework\View\Element\Html\Select
+     */
+    private $notificationRenderer;
 
     /**
      * Get cache type type renderer
@@ -33,7 +43,7 @@ class Dynamicfield extends AbstractFieldArray
         if (!$this->statusRenderer) {
             try {
                 $this->statusRenderer = $this->getLayout()->createBlock(
-                    'Monogo\Smsapi\Block\Adminhtml\Form\Field\Status',
+                    'Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status',
                     '',
                     ['data' => ['is_render_to_js_template' => true]]
                 );
@@ -42,6 +52,27 @@ class Dynamicfield extends AbstractFieldArray
             }
         }
         return $this->statusRenderer;
+    }
+
+    /**
+     * Get cache type type renderer
+     *
+     * @return \Magento\Framework\View\Element\Html\Select
+     */
+    protected function getStatusFromRenderer()
+    {
+        if (!$this->statusFromRenderer) {
+            try {
+                $this->statusFromRenderer = $this->getLayout()->createBlock(
+                    'Smsapi\Smsapi2\Block\Adminhtml\Form\Field\StatusFrom',
+                    '',
+                    ['data' => ['is_render_to_js_template' => true]]
+                );
+                $this->statusFromRenderer->setClass('customer_group_select required-entry validate-no-empty');
+            } catch (\Exception $e) {
+            }
+        }
+        return $this->statusFromRenderer;
     }
 
     /**
@@ -54,7 +85,7 @@ class Dynamicfield extends AbstractFieldArray
         if (!$this->yesnoRenderer) {
             try {
                 $this->yesnoRenderer = $this->getLayout()->createBlock(
-                    'Monogo\Smsapi\Block\Adminhtml\Form\Field\Yesno',
+                    'Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Yesno',
                     '',
                     ['data' => ['is_render_to_js_template' => true]]
                 );
@@ -66,14 +97,42 @@ class Dynamicfield extends AbstractFieldArray
     }
 
     /**
+     * Get Yes No renderer
+     *
+     * @return \Magento\Framework\View\Element\Html\Select
+     */
+    protected function getNotificationRenderer()
+    {
+        if (!$this->notificationRenderer) {
+            try {
+                $this->notificationRenderer = $this->getLayout()->createBlock(
+                    'Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Notification',
+                    '',
+                    ['data' => ['is_render_to_js_template' => true]]
+                );
+                $this->notificationRenderer->setClass('customer_group_select required-entry validate-select');
+            } catch (\Exception $e) {
+            }
+        }
+        return $this->notificationRenderer;
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function _prepareToRender()
     {
         $this->addColumn(
+            'col_6',
+            [
+                'label' => __('Status from'),
+                'renderer' => $this->getStatusFromRenderer(),
+            ]
+        );
+        $this->addColumn(
             'col_1',
             [
-                'label' => __('Status'),
+                'label' => __('Status to'),
                 'renderer' => $this->getStatusRenderer(),
             ]
         );
@@ -85,11 +144,33 @@ class Dynamicfield extends AbstractFieldArray
             ]
         );
         $this->addColumn(
+            'col_7',
+            [
+                'label' => __('Send message to client'),
+                'renderer' => $this->getYesNoRenderer(),
+            ]
+        );
+        $this->addColumn(
             'col_3',
             [
                 'label' => __('Message'),
                 'renderer' => false,
-                'class' => 'required-entry message-input',
+                'class' => 'message-input',
+            ]
+        );
+        $this->addColumn(
+            'col_4',
+            [
+                'label' => __('Send notification'),
+                'renderer' => $this->getNotificationRenderer(),
+            ]
+        );
+        $this->addColumn(
+            'col_5',
+            [
+                'label' => __('Notification message'),
+                'renderer' => false,
+                'class' => 'message-input',
             ]
         );
 
@@ -106,6 +187,8 @@ class Dynamicfield extends AbstractFieldArray
         $optionExtraAttr['option_' . $this->getStatusRenderer()->calcOptionHash($row->getData('col_1'))] =
             'selected="selected"';
         $optionExtraAttr['option_' . $this->getYesNoRenderer()->calcOptionHash($row->getData('col_2'))] =
+            'selected="selected"';
+        $optionExtraAttr['option_' . $this->getNotificationRenderer()->calcOptionHash($row->getData('col_4'))] =
             'selected="selected"';
 
         $row->setData(

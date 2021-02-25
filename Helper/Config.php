@@ -1,16 +1,13 @@
 <?php
 
-namespace Monogo\Smsapi\Helper;
+namespace Smsapi\Smsapi2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * Config helper
- *
- * @category SMSAPI
- * @package  Monogo|SMSAPI
- * @author   Paweł Detka <pawel.detka@monogo.pl>
+ * Class Config
+ * @package Smsapi\Smsapi2\Helper
  */
 class Config extends AbstractHelper
 {
@@ -30,7 +27,25 @@ class Config extends AbstractHelper
 
     const SERVICE = 'general/service';
 
+    const CC_NUMBERS = 'general/ccnumbers';
+
+    const TEMPLATES = 'templates/messages';
+
     const ENABLE_LOG = 'debug/enable_log';
+
+    const BEARER = 'oauth/bearer';
+
+    const CLIENT_ID = 'oauth/client_id';
+
+    const CLIENT_SECRET = 'oauth/client_secret';
+
+    const REFRESH_TOKEN = 'oauth/refresh_token';
+
+    const OAUTH_ENABLE = 'general/oauth_enable';
+
+    const TOKEN_ENABLE = 'general/apitoken_enable';
+
+    protected $templates;
 
     /**
      * Get Store Config by key
@@ -43,6 +58,22 @@ class Config extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             $config_path,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get Store Config by key
+     *
+     * @param string $config_path Path
+     *
+     * @return mixed
+     */
+    public function setConfig($config_path, $value)
+    {
+        return $this->scopeConfig->setValue(
+            $config_path,
+            $value,
             ScopeInterface::SCOPE_STORE
         );
     }
@@ -124,7 +155,55 @@ class Config extends AbstractHelper
      */
     public function getService()
     {
-        return $this->getConfig(self::CONFIG_PATH . self::SERVICE);
+        $halko = $this->getConfig(self::CONFIG_PATH . self::SERVICE);
+        return $halko;
+    }
+
+    /**
+     * Get Service
+     *
+     * @return array
+     */
+    public function getCcNumbers()
+    {
+        return array_unique(explode(',', $this->getConfig(self::CONFIG_PATH . self::CC_NUMBERS)));
+    }
+
+    /**
+     * Get SMS Templates
+     *
+     * @return array
+     */
+    public function getTemplates()
+    {
+        if (empty($this->templates) && $this->getIsEnabled()) {
+            $templatesConfig = json_decode($this->getConfig(self::CONFIG_PATH . self::TEMPLATES), true);
+            if ($templatesConfig) {
+                foreach ($templatesConfig as $templateConfig) {
+                    if ($templateConfig['col_2'] == 1) {
+                        if ($templateConfig['col_6'] != 'any') {
+                            $this->templates[$templateConfig['col_6'] . '_' . $templateConfig['col_1']] = [
+                                'tmeplate' => $templateConfig['col_3'],
+                                'send_cc' => $templateConfig['col_4'],
+                                'tmeplate_cc' => $templateConfig['col_5'],
+                                'status_from' => $templateConfig['col_6'],
+                                'send_to_client' => $templateConfig['col_7'],
+                            ];
+                        }
+                        if ($templateConfig['col_6'] == 'any') {
+                            $this->templates[$templateConfig['col_1']] = [
+                                'tmeplate' => $templateConfig['col_3'],
+                                'send_cc' => $templateConfig['col_4'],
+                                'tmeplate_cc' => $templateConfig['col_5'],
+                                'status_from' => $templateConfig['col_6'],
+                                'send_to_client' => $templateConfig['col_7'],
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+        return $this->templates;
     }
 
     /**
@@ -135,5 +214,85 @@ class Config extends AbstractHelper
     public function getEnableLog()
     {
         return $this->getConfig(self::CONFIG_PATH . self::ENABLE_LOG);
+    }
+
+    /**
+     * Get Is Module enabled
+     *
+     * @return string
+     */
+    public function getOauthBearer()
+    {
+        return $this->getConfig(self::CONFIG_PATH . self::BEARER);
+    }
+
+    /**
+     * Get Is Module enabled
+     *
+     * @return string
+     */
+    public function getOauthBearerPath()
+    {
+        return self::CONFIG_PATH . self::BEARER;
+    }
+
+    /**
+     * Get Is Module enabled
+     *
+     * @return string
+     */
+    public function getOauthRefreshTokenPath()
+    {
+        return self::CONFIG_PATH . self::REFRESH_TOKEN;
+    }
+
+    /**
+     * Get Is Module enabled
+     *
+     * @return string
+     */
+    public function getOauthClientId()
+    {
+        return $this->getConfig(self::CONFIG_PATH . self::CLIENT_ID);
+    }
+
+    /**
+     * Get Is Module enabled
+     *
+     * @return string
+     */
+    public function getOauthClientSecret()
+    {
+        return $this->getConfig(self::CONFIG_PATH . self::CLIENT_SECRET);
+    }
+
+    /**
+     * Get Is Module enabled
+     *
+     * @return string
+     */
+    public function getRefreshToken()
+    {
+        return $this->getConfig(self::CONFIG_PATH . self::REFRESH_TOKEN);
+    }
+
+    /**
+     * Get Is Module enabled
+     *
+     * @return int
+     */
+    public function getOauthEnable()
+    {
+        return $this->getConfig(self::CONFIG_PATH . self::OAUTH_ENABLE);
+    }
+
+    /**
+     * Get Is Module enabled
+     *
+     * @return int
+     */
+    public function getTokenEnable()
+    {
+        return $this->getConfig(self::CONFIG_PATH . self::TOKEN_ENABLE);
     }
 }

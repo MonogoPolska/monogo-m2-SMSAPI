@@ -1,6 +1,6 @@
 <?php
 
-namespace Monogo\Smsapi\Logger;
+namespace Smsapi\Smsapi2\Logger;
 
 use Magento\Framework\Logger\Handler\Base;
 use Monolog\Logger;
@@ -9,7 +9,7 @@ use Monolog\Logger;
  * Log Handler
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Handler extends Base

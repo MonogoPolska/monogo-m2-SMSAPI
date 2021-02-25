@@ -1,18 +1,20 @@
 <?php
 
-namespace Monogo\Smsapi\Model\Api;
+namespace Smsapi\Smsapi2\Model\Api;
 
-use Monogo\Smsapi\Helper\Config;
-use Monogo\Smsapi\Helper\Log;
+use Smsapi\Client\Curl\SmsapiHttpClient;
+use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
 use Smsapi\Client\Service\SmsapiComService;
 use Smsapi\Client\Service\SmsapiPlService;
-use Smsapi\Client\SmsapiHttpClient;
+use Smsapi\Smsapi2\Helper\Config;
+use Smsapi\Smsapi2\Helper\Log;
+use Smsapi\Smsapi2\Helper\OauthHelper;
 
 /**
  * API Client
  *
  * @category SMSAPI
- * @package  Monogo|SMSAPI
+ * @package  Smsapi|SMSAPI
  * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
 class Client
@@ -33,6 +35,11 @@ class Client
     private $errors = [];
 
     /**
+     * @var OauthHelper
+     */
+    private $oauthHelper;
+
+    /**
      * @var string[]
      */
     private $services = [
@@ -40,18 +47,24 @@ class Client
         'pl' => 'smsapiPlService',
     ];
 
+    private $curl;
+
     /**
      * Client constructor.
-     *
-     * @param Config $config Config
-     * @param Log    $log    Log
+     * @param Config      $config
+     * @param Log         $log
+     * @param OauthHelper $oauthHelper
      */
     public function __construct(
         Config $config,
-        Log $log
+        Log $log,
+        OauthHelper $oauthHelper,
+        \Magento\Framework\HTTP\Adapter\Curl $curl
     ) {
         $this->config = $config;
         $this->log = $log;
+        $this->oauthHelper = $oauthHelper;
+        $this->curl = $curl;
     }
 
     /**
@@ -62,10 +75,16 @@ class Client
     public function getService()
     {
         try {
-            return (new SmsapiHttpClient())
-                ->{$this->services[$this->config->getService()]}($this->config->getApiToken());
+            if ($this->config->getOauthEnable()) {
+                return (new SmsapiHttpClient())
+                    ->smsapiPlService($this->config->getOauthBearer());
+            }
+            if ($this->config->getTokenEnable()) {
+                return (new SmsapiHttpClient())
+                    ->{$this->services[$this->config->getService()]}($this->config->getApiToken());
+            }
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'getService'.$e->getMessage();
         }
     }
 
@@ -79,7 +98,7 @@ class Client
         try {
             return $this->getService()->pingFeature()->ping();
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'ping'.$e->getMessage();
         }
     }
 
@@ -93,7 +112,7 @@ class Client
         try {
             return $this->getService()->profileFeature()->findProfile();
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'getProfile '.$e->getMessage();
         }
     }
 
@@ -105,9 +124,36 @@ class Client
     public function getSenders()
     {
         try {
-            return $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
+            $senders = $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
+            return $senders;
         } catch (\Exception $e) {
-            $this->errors[] = $e->getMessage();
+            $this->errors[] = 'getSenders '.$e->getMessage();
+        }
+    }
+
+    /**
+     * Send SMS message
+     *
+     * @param string $phoneNumber Phone number
+     * @param string $message     Message
+     *
+     * @return \Smsapi\Client\Feature\Sms\Data\Sms
+     */
+    public function send($phoneNumber, $message)
+    {
+        $this->log->log('sms send init for ' . $phoneNumber . ' with message ' . $message);
+
+        try {
+            $sms = SendSmsBag::withMessage($phoneNumber, $message);
+            $sms->partnerId = 'MAGENTO';
+            $sms->normalize = $this->config->getAllowLong();
+            if(!$this->config->getOauthBearer()) {
+                $sms->from = $this->config->getSender();
+            }
+            $sms->encoding = 'utf-8';
+            return $this->getService()->smsFeature()->sendSms($sms);
+        } catch (\Exception $e) {
+            $this->errors[] = 'sendSms '.$e->getMessage();
         }
     }
 
