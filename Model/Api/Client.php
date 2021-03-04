@@ -75,7 +75,7 @@ class Client
     public function getService()
     {
         try {
-            if ($this->config->getOauthEnable()) {
+            if ($this->config->getOauthEnable() && $this->config->getOauthBearer()) {
                 return (new SmsapiHttpClient())
                     ->smsapiPlService($this->config->getOauthBearer());
             }
@@ -124,8 +124,7 @@ class Client
     public function getSenders()
     {
         try {
-            $senders = $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
-            return $senders;
+            return $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
         } catch (\Exception $e) {
             $this->errors[] = 'getSenders '.$e->getMessage();
         }
@@ -147,9 +146,7 @@ class Client
             $sms = SendSmsBag::withMessage($phoneNumber, $message);
             $sms->partnerId = 'MAGENTO';
             $sms->normalize = $this->config->getAllowLong();
-            if(!$this->config->getOauthBearer()) {
-                $sms->from = $this->config->getSender();
-            }
+            $sms->from = $this->config->getSender();
             $sms->encoding = 'utf-8';
             return $this->getService()->smsFeature()->sendSms($sms);
         } catch (\Exception $e) {
