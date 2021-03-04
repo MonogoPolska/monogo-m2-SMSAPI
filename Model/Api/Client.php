@@ -124,7 +124,10 @@ class Client
     public function getSenders()
     {
         try {
-            return $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
+            if($this->getService()) {
+                return $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
+            } else
+            {return [];}
         } catch (\Exception $e) {
             $this->errors[] = 'getSenders '.$e->getMessage();
         }
