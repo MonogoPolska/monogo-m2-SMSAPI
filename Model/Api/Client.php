@@ -75,7 +75,7 @@ class Client
     public function getService()
     {
         try {
-            if ($this->config->getOauthEnable() && $this->config->getOauthBearer()) {
+            if ($this->config->getOauthEnable()) {
                 return (new SmsapiHttpClient())
                     ->smsapiPlService($this->config->getOauthBearer());
             }
