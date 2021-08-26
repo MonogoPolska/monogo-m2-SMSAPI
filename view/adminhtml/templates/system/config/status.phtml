@@ -24,12 +24,12 @@
 
 <?php if ($block->isOauthEnabled() && empty($block->isBearerSet())): ?>
 
-<button id="oauth" title="<?= __('Logowanie via OAUTH') ?>" type="button"
+<button id="oauth" title="<?= __('OAuth Login') ?>" type="button"
         class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
         data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false"
         onclick="window.open('<?= $block->getOauthUrl() ?>')">
             <span class="ui-button-text">
-               <span><?= __('Logowanie via OAUTH') ?></span>
+               <span><?= __('OAuth Login') ?></span>
             </span>
 </button>
 
@@ -57,9 +57,19 @@
 
     <?php $profile = $block->getProfile(); ?>
     <div class="smsapi_system_status_container">
+        <button id="oauth" title="<?= __('Logged In with OAuth') ?>" type="button" style="background:green; border:green"
+                class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false"
+                onclick="window.open('<?= $block->getOauthUrl() ?>')">
+            <span class="ui-button-text">
+               <span><?= __('Logged In with OAuth') ?></span>
+            </span>
+        </button>
+        <br>
         <span style="font-weight: bold; color:green"> <?= __('Account') ?>: </span><span><?= $profile->name ?></span><br/>
         <span style="font-weight: bold; color:green"> <?= __('Points') ?>: </span><span><?= $profile->points ?></span><br/>
-        <span><a href="https://ssl.smsapi.pl/"></a></span><br/>
+        <span><a href="https://ssl.smsapi.pl/" target="_blank">ssl.smsapi.pl</a></span><br/>
+
         <?php if (!$block->isOauthEnabled()): ?>
 
             <button id="gotodashboard" title="<?= __('Go to SMSAPI dashboard') ?>" type="button"

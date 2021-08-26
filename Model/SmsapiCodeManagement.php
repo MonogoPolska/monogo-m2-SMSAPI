@@ -7,11 +7,25 @@ declare(strict_types=1);
 
 namespace Smsapi\Smsapi2\Model;
 
-class SmsapiCodeManagement implements \Smsapi\Smsapi2\Api\SmsapiCodeManagementInterface
+use Smsapi\Smsapi2\Api\SmsapiCodeManagementInterface;
+use Smsapi\Smsapi2\Helper\OauthHelper;
+
+/**
+ * Class SmsapiCodeManagement
+ * @package Smsapi\Smsapi2\Model
+ */
+class SmsapiCodeManagement implements SmsapiCodeManagementInterface
 {
+    /**
+     * @var OauthHelper
+     */
     protected $oauthHelper;
 
-    public function __construct(\Smsapi\Smsapi2\Helper\OauthHelper $oauthHelper)
+    /**
+     * SmsapiCodeManagement constructor.
+     * @param OauthHelper $oauthHelper
+     */
+    public function __construct(OauthHelper $oauthHelper)
     {
         $this->oauthHelper = $oauthHelper;
     }
@@ -21,10 +35,6 @@ class SmsapiCodeManagement implements \Smsapi\Smsapi2\Api\SmsapiCodeManagementIn
      */
     public function getSmsapiCode($code)
     {
-//        $auth = $this->oauthHelper->authorize($code);
-        if ($this->oauthHelper->authorize($code) === false) {
-            return 'Authorization error, try again';
-        }
-        return 'Authorized, please refresh admin panel';
+        return $this->oauthHelper->authorize($code);
     }
 }

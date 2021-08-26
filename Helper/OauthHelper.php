@@ -5,37 +5,45 @@ namespace Smsapi\Smsapi2\Helper;
 use Magento\Framework\App\Cache\Frontend\Pool;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Backend\Model\UrlInterface;
+use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\HTTP\Adapter\Curl;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Store\Model\StoreManagerInterface;
 
-class OauthHelper extends AbstractHelper
+/**
+ * Class OauthHelper
+ * @package Smsapi\Smsapi2\Helper
+ */
+class OauthHelper
 {
     /**
-     * @var \Smsapi\Smsapi2\Helper\Log
+     * @var Log
      */
     protected $log;
 
     /**
-     * @var \Magento\Framework\HTTP\Adapter\Curl
+     * @var Curl
      */
     protected $curl;
 
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\DateTime
+     * @var DateTime
      */
     protected $datetime;
 
     /**
-     * @var \Smsapi\Smsapi2\Helper\Config
+     * @var Config
      */
     protected $config;
 
     /**
-     * @var \Magento\Framework\App\Config\Storage\WriterInterface
+     * @var WriterInterface
      */
     protected $configWriter;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     protected $storeManager;
 
@@ -50,21 +58,33 @@ class OauthHelper extends AbstractHelper
     protected $cacheFrontendPool;
 
     /**
-     * Constructor
-     *
-     * @param \Smsapi\Smsapi2\Helper\Log                  $log
-     * @param \Magento\Framework\HTTP\Adapter\Curl        $curl
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime $datetime
+     * @var UrlInterface
+     */
+    protected $urlBuilder;
+
+
+    /**
+     * OauthHelper constructor.
+     * @param Log $log
+     * @param Curl $curl
+     * @param DateTime $datetime
+     * @param Config $config
+     * @param WriterInterface $configWriter
+     * @param StoreManagerInterface $storeManager
+     * @param TypeListInterface $cacheTypeList
+     * @param Pool $cacheFrontendPool
+     * @param UrlInterface $urlBuilder
      */
     public function __construct(
-        \Smsapi\Smsapi2\Helper\Log $log,
-        \Magento\Framework\HTTP\Adapter\Curl $curl,
-        \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
-        \Smsapi\Smsapi2\Helper\Config $config,
-        \Magento\Framework\App\Config\Storage\WriterInterface $configWriter,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        Log $log,
+        Curl $curl,
+        DateTime $datetime,
+        Config $config,
+        WriterInterface $configWriter,
+        StoreManagerInterface $storeManager,
         TypeListInterface $cacheTypeList,
-        Pool $cacheFrontendPool
+        Pool $cacheFrontendPool,
+        UrlInterface $urlBuilder
     ) {
         $this->log = $log;
         $this->curl = $curl;
@@ -74,11 +94,16 @@ class OauthHelper extends AbstractHelper
         $this->storeManager = $storeManager;
         $this->cacheTypeList = $cacheTypeList;
         $this->cacheFrontendPool = $cacheFrontendPool;
+        $this->urlBuilder = $urlBuilder;
     }
 
+    /**
+     * @param $code
+     * @return bool
+     */
     public function authorize($code)
     {
-        $this->oauthGetToken($code);
+        return $this->oauthGetToken($code);
     }
 
     /**
@@ -116,28 +141,46 @@ class OauthHelper extends AbstractHelper
         return false;
     }
 
-    public function setOauthBearer($value)
-    {
-        $this->configWriter->save($this->config->getOauthBearerPath(), $value, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
-    }
 
-    public function setOauthRefreshToken($value)
-    {
-        $this->configWriter->save($this->config->getOauthRefreshTokenPath(), $value, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
-    }
-
-    public function setOauthEnabled($value)
-    {
-        $this->configWriter->save($this->config->getOauthEnable(), $value, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
-    }
-
+    /**
+     * @return string
+     */
     public function prepareRedirectUrl()
     {
-        $storeUrl = $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_DIRECT_LINK);
-        $endpointUrl = 'rest/all/V1/smsapi-smsapi2/smsapicode/';
-        return sprintf('%s%s', $storeUrl, $endpointUrl);
+        return $this->urlBuilder->getUrl('smsapi/oauth/callback');
     }
 
+    /**
+     * @param $value
+     */
+    public function setOauthBearer($value)
+    {
+        $this->configWriter->save($this->config->getOauthBearerPath(), $value,
+            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
+    }
+
+    /**
+     * @param $value
+     */
+    public function setOauthRefreshToken($value)
+    {
+        $this->configWriter->save($this->config->getOauthRefreshTokenPath(), $value,
+            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
+    }
+
+    /**
+     * @param $value
+     */
+    public function setOauthEnabled($value)
+    {
+        $this->configWriter->save($this->config->getOauthEnable(), $value,
+            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
+    }
+
+
+    /**
+     *
+     */
     public function flushCacheCache()
     {
         $_types = [
@@ -152,10 +195,17 @@ class OauthHelper extends AbstractHelper
         }
     }
 
+    /**
+     * @return string
+     */
     public function getOauthAuthorizationUrl()
     {
-        $base = 'https://oauth.smsapi.io?';
-        $params = ['client_id' => $this->config->getOauthClientId(), 'redirect_uri' => $this->prepareRedirectUrl(),'scope'=>'sms,sms_sender,profile'];
+        $base = 'https://oauth.smsapi.io/oauth/access?';
+        $params = [
+            'client_id' => $this->config->getOauthClientId(),
+            'redirect_uri' => $this->prepareRedirectUrl(),
+            'scope' => 'sms,sms_sender,profile'
+        ];
         return $base . http_build_query($params);
     }
 }
