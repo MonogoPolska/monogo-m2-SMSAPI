@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this module will be documented in this file.
 
-## [1.0.3-1.0.5]
+## [1.0.3-1.0.6]
 Oauth Authorization
 
 ## [1.0.2] 
