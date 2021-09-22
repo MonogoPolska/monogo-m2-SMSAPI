@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Controller\Adminhtml\Inventory;
 
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 use Smsapi\Smsapi2\Controller\Adminhtml\AbstractReport;
 
 /**
@@ -14,8 +18,7 @@ class Index extends AbstractReport
 {
     /**
      * Inventory report action
-     *
-     * @return void
+     * @return ResponseInterface|ResultInterface|void
      */
     public function execute()
     {

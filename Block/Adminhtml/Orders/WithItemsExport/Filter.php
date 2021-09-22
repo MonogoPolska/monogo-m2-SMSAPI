@@ -1,28 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Orders\WithItemsExport;
 
+use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\Data\Form\Element\Fieldset;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Registry;
 use Magento\Sales\Block\Adminhtml\Report\Filter\Form;
+use Magento\Sales\Model\Order\ConfigFactory;
 
-/**
- * Class Filter
- *
- * @package Smsapi\Smsapi2\Block\Adminhtml\Orders\WithItemsExport
- */
 class Filter extends Form
 {
+
     /**
-     * @var \Magento\Backend\Model\Auth\Session
+     * @var Session
      */
     protected $authSession;
 
+    /**
+     * Filter constructor.
+     * @param Session $authSession
+     * @param Context $context
+     * @param Registry $registry
+     * @param FormFactory $formFactory
+     * @param ConfigFactory $orderConfig
+     * @param array $data
+     */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session $authSession,
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Data\FormFactory $formFactory,
-        \Magento\Sales\Model\Order\ConfigFactory $orderConfig,
+        Session $authSession,
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        ConfigFactory $orderConfig,
         array $data = []
     ) {
         $this->_storeManager = $context->getStoreManager();
@@ -31,10 +43,7 @@ class Filter extends Form
     }
 
     /**
-     * Preparing form
-     *
-     * @return $this
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * @return $this|Filter
      */
     protected function _prepareForm()
     {
@@ -63,7 +72,11 @@ class Filter extends Form
         return $this;
     }
 
-    public function getWebsiteNames($addAll = false)
+    /**
+     * @param false $addAll
+     * @return array
+     */
+    public function getWebsiteNames($addAll = false): array
     {
         $websiteList = [];
         $websites = $this->_storeManager->getWebsites();

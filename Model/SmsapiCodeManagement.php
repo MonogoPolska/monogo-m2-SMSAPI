@@ -33,7 +33,7 @@ class SmsapiCodeManagement implements SmsapiCodeManagementInterface
     /**
      * {@inheritdoc}
      */
-    public function getSmsapiCode($code)
+    public function getSmsapiCode(string $code): bool
     {
         return $this->oauthHelper->authorize($code);
     }

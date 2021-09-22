@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -11,39 +13,39 @@ use Magento\Store\Model\ScopeInterface;
  */
 class Config extends AbstractHelper
 {
-    const CONFIG_PATH = 'smsapi/';
+    public const CONFIG_PATH = 'smsapi/';
 
-    const ENABLED = 'general/enable';
+    public const ENABLED = 'general/enable';
 
-    const API_TOKEN = 'general/apitoken';
+    public const API_TOKEN = 'general/apitoken';
 
-    const ALLOW_LONG = 'general/allow_long';
+    public const ALLOW_LONG = 'general/allow_long';
 
-    const STORE_NAME = 'general/storename';
+    public const STORE_NAME = 'general/storename';
 
-    const SENDER = 'general/sender';
+    public const SENDER = 'general/sender';
 
-    const ALERT_LIMIT = 'general/alert_limit';
+    public const ALERT_LIMIT = 'general/alert_limit';
 
-    const SERVICE = 'general/service';
+    public const SERVICE = 'general/service';
 
-    const CC_NUMBERS = 'general/ccnumbers';
+    public const CC_NUMBERS = 'general/ccnumbers';
 
-    const TEMPLATES = 'templates/messages';
+    public const TEMPLATES = 'templates/messages';
 
-    const ENABLE_LOG = 'debug/enable_log';
+    public const ENABLE_LOG = 'debug/enable_log';
 
-    const BEARER = 'oauth/bearer';
+    public const BEARER = 'oauth/bearer';
 
-    const CLIENT_ID = 'oauth/client_id';
+    public const CLIENT_ID = 'oauth/client_id';
 
-    const CLIENT_SECRET = 'oauth/client_secret';
+    public const CLIENT_SECRET = 'oauth/client_secret';
 
-    const REFRESH_TOKEN = 'oauth/refresh_token';
+    public const REFRESH_TOKEN = 'oauth/refresh_token';
 
-    const OAUTH_ENABLE = 'general/oauth_enable';
+    public const OAUTH_ENABLE = 'general/oauth_enable';
 
-    const TOKEN_ENABLE = 'general/apitoken_enable';
+    public const TOKEN_ENABLE = 'general/apitoken_enable';
 
     protected $templates;
 
@@ -54,7 +56,7 @@ class Config extends AbstractHelper
      *
      * @return mixed
      */
-    public function getConfig($config_path)
+    public function getConfig(string $config_path)
     {
         return $this->scopeConfig->getValue(
             $config_path,
@@ -64,12 +66,11 @@ class Config extends AbstractHelper
 
     /**
      * Get Store Config by key
-     *
-     * @param string $config_path Path
-     *
+     * @param string $config_path
+     * @param $value
      * @return mixed
      */
-    public function setConfig($config_path, $value)
+    public function setConfig(string $config_path, $value)
     {
         return $this->scopeConfig->setValue(
             $config_path,
@@ -83,9 +84,9 @@ class Config extends AbstractHelper
      *
      * @return int
      */
-    public function getIsEnabled()
+    public function getIsEnabled(): int
     {
-        return $this->getConfig(self::CONFIG_PATH . self::ENABLED);
+        return (int)$this->getConfig(self::CONFIG_PATH . self::ENABLED);
     }
 
     /**
@@ -93,9 +94,9 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getApiToken()
+    public function getApiToken(): string
     {
-        return $this->getConfig(self::CONFIG_PATH . self::API_TOKEN);
+        return (string)$this->getConfig(self::CONFIG_PATH . self::API_TOKEN);
     }
 
     /**
@@ -103,9 +104,9 @@ class Config extends AbstractHelper
      *
      * @return bool
      */
-    public function validateCredentials()
+    public function validateCredentials(): bool
     {
-        return (bool)!empty($this->getApiToken());
+        return !empty($this->getApiToken());
     }
 
     /**
@@ -113,9 +114,9 @@ class Config extends AbstractHelper
      *
      * @return int
      */
-    public function getAllowLong()
+    public function getAllowLong(): int
     {
-        return $this->getConfig(self::CONFIG_PATH . self::ALLOW_LONG);
+        return (int)$this->getConfig(self::CONFIG_PATH . self::ALLOW_LONG);
     }
 
     /**
@@ -123,9 +124,9 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getStoreName()
+    public function getStoreName(): string
     {
-        return $this->getConfig(self::CONFIG_PATH . self::STORE_NAME);
+        return (string)$this->getConfig(self::CONFIG_PATH . self::STORE_NAME);
     }
 
     /**
@@ -133,9 +134,9 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getSender()
+    public function getSender(): string
     {
-        return $this->getConfig(self::CONFIG_PATH . self::SENDER);
+        return (string)$this->getConfig(self::CONFIG_PATH . self::SENDER);
     }
 
     /**
@@ -143,9 +144,9 @@ class Config extends AbstractHelper
      *
      * @return int
      */
-    public function getAlertLimit()
+    public function getAlertLimit(): int
     {
-        return $this->getConfig(self::CONFIG_PATH . self::ALERT_LIMIT);
+        return (int)$this->getConfig(self::CONFIG_PATH . self::ALERT_LIMIT);
     }
 
     /**
@@ -153,10 +154,9 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getService()
+    public function getService(): string
     {
-        $halko = $this->getConfig(self::CONFIG_PATH . self::SERVICE);
-        return $halko;
+        return (string)$this->getConfig(self::CONFIG_PATH . self::SERVICE);
     }
 
     /**
@@ -164,15 +164,14 @@ class Config extends AbstractHelper
      *
      * @return array
      */
-    public function getCcNumbers()
+    public function getCcNumbers(): array
     {
         return array_unique(explode(',', $this->getConfig(self::CONFIG_PATH . self::CC_NUMBERS)));
     }
 
     /**
      * Get SMS Templates
-     *
-     * @return array
+     * @return mixed
      */
     public function getTemplates()
     {
@@ -211,9 +210,9 @@ class Config extends AbstractHelper
      *
      * @return int
      */
-    public function getEnableLog()
+    public function getEnableLog(): int
     {
-        return $this->getConfig(self::CONFIG_PATH . self::ENABLE_LOG);
+        return (int)$this->getConfig(self::CONFIG_PATH . self::ENABLE_LOG);
     }
 
     /**
@@ -221,9 +220,9 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getOauthBearer()
+    public function getOauthBearer(): string
     {
-        return $this->getConfig(self::CONFIG_PATH . self::BEARER);
+        return (string)$this->getConfig(self::CONFIG_PATH . self::BEARER);
     }
 
     /**
@@ -231,7 +230,7 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getOauthBearerPath()
+    public function getOauthBearerPath(): string
     {
         return self::CONFIG_PATH . self::BEARER;
     }
@@ -241,7 +240,7 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getOauthRefreshTokenPath()
+    public function getOauthRefreshTokenPath(): string
     {
         return self::CONFIG_PATH . self::REFRESH_TOKEN;
     }
@@ -251,9 +250,9 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getOauthClientId()
+    public function getOauthClientId(): string
     {
-        return $this->getConfig(self::CONFIG_PATH . self::CLIENT_ID);
+        return (string)$this->getConfig(self::CONFIG_PATH . self::CLIENT_ID);
     }
 
     /**
@@ -261,9 +260,9 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getOauthClientSecret()
+    public function getOauthClientSecret(): string
     {
-        return $this->getConfig(self::CONFIG_PATH . self::CLIENT_SECRET);
+        return (string)$this->getConfig(self::CONFIG_PATH . self::CLIENT_SECRET);
     }
 
     /**
@@ -271,9 +270,9 @@ class Config extends AbstractHelper
      *
      * @return string
      */
-    public function getRefreshToken()
+    public function getRefreshToken(): string
     {
-        return $this->getConfig(self::CONFIG_PATH . self::REFRESH_TOKEN);
+        return (string)$this->getConfig(self::CONFIG_PATH . self::REFRESH_TOKEN);
     }
 
     /**
@@ -281,9 +280,9 @@ class Config extends AbstractHelper
      *
      * @return int
      */
-    public function getOauthEnable()
+    public function getOauthEnable(): int
     {
-        return $this->getConfig(self::CONFIG_PATH . self::OAUTH_ENABLE);
+        return (int)$this->getConfig(self::CONFIG_PATH . self::OAUTH_ENABLE);
     }
 
     /**
@@ -291,8 +290,8 @@ class Config extends AbstractHelper
      *
      * @return int
      */
-    public function getTokenEnable()
+    public function getTokenEnable(): int
     {
-        return $this->getConfig(self::CONFIG_PATH . self::TOKEN_ENABLE);
+        return (int)$this->getConfig(self::CONFIG_PATH . self::TOKEN_ENABLE);
     }
 }

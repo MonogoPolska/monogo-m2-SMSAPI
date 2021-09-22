@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\System\Config;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Smsapi\Client\Feature\Profile\Data\Profile;
+use Smsapi\Client\Service\SmsapiComService;
+use Smsapi\Client\Service\SmsapiPlService;
 use Smsapi\Smsapi2\Helper\Config;
 use Smsapi\Smsapi2\Helper\OauthHelper;
 use Smsapi\Smsapi2\Model\Api\Client;
@@ -28,16 +33,19 @@ class Status extends Field
      */
     protected $client = null;
 
+    /**
+     * @var OauthHelper|null
+     */
     protected $oauthHelper = null;
 
     /**
      * Status constructor.
      *
-     * @param Context     $context
-     * @param Config      $config
-     * @param Client      $client
+     * @param Context $context
+     * @param Config $config
+     * @param Client $client
      * @param OauthHelper $oauthHelper
-     * @param array       $data
+     * @param array $data
      */
     public function __construct(
         Context $context,
@@ -66,7 +74,7 @@ class Status extends Field
      *
      * @return string
      */
-    public function render(AbstractElement $element)
+    public function render(AbstractElement $element): string
     {
         $columns = $this->getRequest()
             ->getParam('website') || $this->getRequest()->getParam('store') ? 5 : 4;
@@ -81,17 +89,16 @@ class Status extends Field
      *
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return $this->config->validateCredentials() && $this->client->ping();
     }
 
     /**
      * Get current profile
-     *
-     * @return \Smsapi\Client\Feature\Profile\Data\Profile
+     * @return Profile|null
      */
-    public function getProfile()
+    public function getProfile(): ?Profile
     {
         return $this->client->getProfile();
     }
@@ -101,11 +108,14 @@ class Status extends Field
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->client->getErrors();
     }
 
+    /**
+     * @return SmsapiComService|SmsapiPlService|string
+     */
     public function getService()
     {
         return $this->config->getService();
@@ -116,9 +126,9 @@ class Status extends Field
      *
      * @return bool
      */
-    public function isOauthEnabled()
+    public function isOauthEnabled(): bool
     {
-        return $this->config->getOauthEnable();
+        return (bool)$this->config->getOauthEnable();
     }
 
     /**
@@ -126,15 +136,15 @@ class Status extends Field
      *
      * @return bool
      */
-    public function isTokenEnabled()
+    public function isTokenEnabled(): bool
     {
-        return $this->config->getTokenEnable();
+        return (bool)$this->config->getTokenEnable();
     }
 
     /**
      * @return string
      */
-    public function getOauthUrl()
+    public function getOauthUrl(): string
     {
         return (string)$this->oauthHelper->getOauthAuthorizationUrl();
     }
@@ -142,7 +152,7 @@ class Status extends Field
     /**
      * @return string
      */
-    public function isBearerSet()
+    public function isBearerSet(): string
     {
         return $this->config->getOauthBearer();
     }
@@ -150,7 +160,7 @@ class Status extends Field
     /**
      * @return bool
      */
-    public function isTokenSet()
+    public function isTokenSet(): bool
     {
         return empty($this->config->getApiToken());
     }

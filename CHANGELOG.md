@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this module will be documented in this file.
 
+## [1.0.7]
+Refactor, fix minor bugs.
+
 ## [1.0.3-1.0.6]
 Oauth Authorization
 

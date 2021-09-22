@@ -1,41 +1,52 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Plugin;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+
+/**
+ * Class LayoutProcessor
+ * @package Smsapi\Smsapi2\Plugin
+ */
 class LayoutProcessor
 {
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     protected $scopeConfig;
 
     /**
      * Recipient email config path
      */
-    const SMSAPI_MODULE_ENABLED = 'smsapi/general/enable';
+    public const SMSAPI_MODULE_ENABLED = 'smsapi/general/enable';
 
-    const CONFIG_STORE_NAME = 'general/store_information/name';
+    public const CONFIG_STORE_NAME = 'general/store_information/name';
 
-    const CONFIG_STORE_STREET_LINE = 'general/store_information/street_line1';
+    public const CONFIG_STORE_STREET_LINE = 'general/store_information/street_line1';
 
-    const CONFIG_STORE_CITY = 'general/store_information/city';
+    public const CONFIG_STORE_CITY = 'general/store_information/city';
 
-    const CONFIG_STORE_POST_CODE = 'general/store_information/postcode';
+    public const CONFIG_STORE_POST_CODE = 'general/store_information/postcode';
 
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig)
+    /**
+     * LayoutProcessor constructor.
+     * @param ScopeConfigInterface $scopeConfig
+     */
+    public function __construct(ScopeConfigInterface $scopeConfig)
     {
         $this->scopeConfig = $scopeConfig;
     }
 
     /**
      * Checkout LayoutProcessor after process plugin.
-     *
      * @param \Magento\Checkout\Block\Checkout\LayoutProcessor $processor
-     * @param array                                            $jsLayout
-     *
+     * @param array $jsLayout
      * @return array
      */
-    public function afterProcess(\Magento\Checkout\Block\Checkout\LayoutProcessor $processor, $jsLayout)
+    public function afterProcess(\Magento\Checkout\Block\Checkout\LayoutProcessor $processor, array $jsLayout): array
     {
         if ($this->getSmsapiModuleEnabled()) {
             $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']
@@ -82,23 +93,32 @@ class LayoutProcessor
         return $jsLayout;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSmsapiModuleEnabled()
     {
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        $storeScope = ScopeInterface::SCOPE_STORE;
 
         return $this->scopeConfig->getValue(self::SMSAPI_MODULE_ENABLED, $storeScope);
     }
 
+    /**
+     * @return mixed
+     */
     public function getStoreName()
     {
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        $storeScope = ScopeInterface::SCOPE_STORE;
 
         return $this->scopeConfig->getValue(self::CONFIG_STORE_NAME, $storeScope);
     }
 
-    public function getStoreAddress()
+    /**
+     * @return string
+     */
+    public function getStoreAddress(): string
     {
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        $storeScope = ScopeInterface::SCOPE_STORE;
 
         $city = $this->scopeConfig->getValue(self::CONFIG_STORE_CITY, $storeScope);
         $address = $this->scopeConfig->getValue(self::CONFIG_STORE_STREET_LINE, $storeScope);

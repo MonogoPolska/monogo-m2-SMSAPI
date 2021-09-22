@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Orders;
+
+use Magento\Backend\Block\Widget\Grid\Container;
 
 /**
  * Orders + items report
@@ -8,7 +12,7 @@ namespace Smsapi\Smsapi2\Block\Adminhtml\Orders;
  * @category Smsapi
  * @package  Smsapi\Smsapi2
  */
-class AndItems extends \Magento\Backend\Block\Widget\Grid\Container
+class AndItems extends Container
 {
     /**
      * {@inheritdoc}

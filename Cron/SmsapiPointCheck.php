@@ -1,33 +1,37 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Cron;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\Driver\File;
+use Smsapi\Client\Feature\Profile\Data\Profile;
 use Smsapi\Smsapi2\Helper\Config;
 use Smsapi\Smsapi2\Helper\Log;
 use Smsapi\Smsapi2\Model\Api\Client;
 
 /**
  * Class SmsapiPointCheck
- *
  * @package Smsapi\Smsapi2\Cron
  */
 class SmsapiPointCheck
 {
+
     /**
-     * @param Log $logger Log
+     * @var Log
      */
     protected $logger;
 
     /**
-     * @param Config $config Config
+     * @var Config
      */
     protected $config;
 
     /**
-     * @param Client $client Client
+     * @var Client
      */
     protected $client;
 
@@ -43,12 +47,11 @@ class SmsapiPointCheck
 
     /**
      * SmsapiPointCheck constructor.
-     *
-     * @param Log        $logger     Log
-     * @param Config     $config     Config
-     * @param Client     $client     Client
-     * @param Filesystem $filesystem Filesystem
-     * @param File       $file       File
+     * @param Log $logger
+     * @param Config $config
+     * @param Client $client
+     * @param Filesystem $filesystem
+     * @param File $file
      */
     public function __construct(
         Log $logger,
@@ -66,10 +69,9 @@ class SmsapiPointCheck
 
     /**
      * Execute the cron
-     *
-     * @return void
+     * @throws FileSystemException
      */
-    public function execute()
+    public function execute(): void
     {
         $fileName = "smsapi_limit";
         $varRootDir = $this->_filesystem->getDirectoryRead(
@@ -88,7 +90,7 @@ class SmsapiPointCheck
      *
      * @return bool
      */
-    public function isLimitExceeded()
+    public function isLimitExceeded(): bool
     {
         if ($this->isValid() && ($this->getProfile()->points <= $this->config->getAlertLimit())) {
             return true;
@@ -101,7 +103,7 @@ class SmsapiPointCheck
      *
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return $this->config->validateCredentials() && $this->client->ping()->smsapi;
     }
@@ -109,9 +111,9 @@ class SmsapiPointCheck
     /**
      * Get current profile
      *
-     * @return \Smsapi\Client\Feature\Profile\Data\Profile
+     * @return Profile
      */
-    public function getProfile()
+    public function getProfile(): Profile
     {
         return $this->client->getProfile();
     }

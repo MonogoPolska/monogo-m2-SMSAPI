@@ -1,8 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Model\ResourceModel\Sales;
 
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as Product;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
+use Magento\Framework\Data\Collection\EntityFactoryInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Sales\Model\ResourceModel\Order;
+use Psr\Log\LoggerInterface;
+use Zend_Db_Expr;
 
 /**
  * Collection of Magento\Sales\Model\Order
@@ -13,15 +24,28 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as Product;
  */
 class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
 {
+    /**
+     * @var Product
+     */
     protected $product;
 
+    /**
+     * Collection constructor.
+     * @param EntityFactoryInterface $entityFactory
+     * @param LoggerInterface $logger
+     * @param FetchStrategyInterface $fetchStrategy
+     * @param ManagerInterface $eventManager
+     * @param AdapterInterface|null $connection
+     * @param AbstractDb|null $resource
+     * @param Product $product
+     */
     public function __construct(
-        \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Framework\DB\Adapter\AdapterInterface $connection = null,
-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null,
+        EntityFactoryInterface $entityFactory,
+        LoggerInterface $logger,
+        FetchStrategyInterface $fetchStrategy,
+        ManagerInterface $eventManager,
+        AdapterInterface $connection = null,
+        AbstractDb $resource = null,
         Product $product
     ) {
         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
@@ -42,20 +66,18 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
      */
     protected function _construct()
     {
-        $this->_init(\Magento\Sales\Model\Order::class, \Magento\Sales\Model\ResourceModel\Order::class);
+        $this->_init(\Magento\Sales\Model\Order::class, Order::class);
     }
 
     /**
      * Prepare for sale by state report
-     *
-     * @param array  $storeIds
-     * @param string $filter
-     *
+     * @param array $storeIds
+     * @param null $filter
      * @return $this
      */
-    public function prepareForByStateReport($storeIds, $filter = null)
+    public function prepareForByStateReport(array $storeIds, $filter = null): self
     {
-        $attributeResource = \Magento\Framework\App\ObjectManager::getInstance()->create('\Magento\Eav\Model\ResourceModel\Entity\Attribute');
+        $attributeResource = ObjectManager::getInstance()->create('\Magento\Eav\Model\ResourceModel\Entity\Attribute');
         $wholesaleCostId = $attributeResource->getIdByCode('catalog_product', 'wholesale_cost');
 
         $this->getSelect()
@@ -126,13 +148,11 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
 
     /**
      * Prepare for state report
-     *
-     * @param array  $storeIds
-     * @param string $filter
-     *
+     * @param array $storeIds
+     * @param null $filter
      * @return $this
      */
-    public function prepareForInStateReport($storeIds, $filter = null)
+    public function prepareForInStateReport(array $storeIds, $filter = null): self
     {
         $this->getSelect()
             ->joinLeft(
@@ -160,13 +180,11 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
 
     /**
      * Prepare for specific state report
-     *
-     * @param array  $storeIds Store IDs
-     * @param string $filter   Filter
-     *
+     * @param array $storeIds
+     * @param null $filter
      * @return $this
      */
-    public function prepareForSpecificStateReport($storeIds, $filter = null)
+    public function prepareForSpecificStateReport(array $storeIds, $filter = null): self
     {
         if (isset($filter['product_family'])) {
             $filterSku = [];
@@ -191,10 +209,10 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
 
         $this
             ->addFieldToSelect(
-                new \Zend_Db_Expr('MIN(main_table.created_at) AS first_order_date')
+                new Zend_Db_Expr('MIN(main_table.created_at) AS first_order_date')
             )
             ->addFieldToSelect(
-                new \Zend_Db_Expr('MAX(main_table.created_at) AS last_order_date')
+                new Zend_Db_Expr('MAX(main_table.created_at) AS last_order_date')
             );
 
         $this->getSelect()
@@ -236,9 +254,9 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
      *
      * @return $this
      */
-    public function prepareForFamilyReport($storeIds, $filter = [])
+    public function prepareForFamilyReport(array $storeIds, $filter = []): self
     {
-        $attributeResource = \Magento\Framework\App\ObjectManager::getInstance()->create('\Magento\Eav\Model\ResourceModel\Entity\Attribute');
+        $attributeResource = ObjectManager::getInstance()->create('\Magento\Eav\Model\ResourceModel\Entity\Attribute');
         $productGroupId = $attributeResource->getIdByCode('catalog_product', 'product_group');
         $productRangeId = $attributeResource->getIdByCode('catalog_product', 'product_range');
 
@@ -294,7 +312,7 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
      *
      * @return $this
      */
-    public function addStoreFilter($storeIds)
+    public function addStoreFilter(array $storeIds): self
     {
         $this->addFieldToFilter('store_id', ['in' => $storeIds]);
         return $this;

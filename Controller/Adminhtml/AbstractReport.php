@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Controller\Adminhtml;
 
 /**
- * @api
- * @since 100.0.2
+ * Class AbstractReport
+ * @package Smsapi\Smsapi2\Controller\Adminhtml
  */
 abstract class AbstractReport extends \Magento\Reports\Controller\Adminhtml\Report\AbstractReport
 {

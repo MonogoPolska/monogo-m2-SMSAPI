@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Setup;
 
 use Magento\Customer\Api\AddressMetadataInterface;
@@ -11,6 +13,10 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Quote\Setup\QuoteSetup;
 use Magento\Sales\Setup\SalesSetup;
 
+/**
+ * Class InstallData
+ * @package Smsapi\Smsapi2\Setup
+ */
 class InstallData implements InstallDataInterface
 {
     /**
@@ -34,9 +40,10 @@ class InstallData implements InstallDataInterface
     protected $setup;
 
     /**
-     * @param EavSetup          $eavSetupFactory
-     * @param QuoteSetup        $quoteSetupFactory
-     * @param SalesSetupFactory $salesSetupFactory
+     * InstallData constructor.
+     * @param EavSetup $eavSetupFactory
+     * @param QuoteSetup $quoteSetupFactory
+     * @param SalesSetup $salesSetupFactory
      */
     public function __construct(
         EavSetup $eavSetupFactory,
@@ -48,7 +55,10 @@ class InstallData implements InstallDataInterface
         $this->salesSetupFactory = $salesSetupFactory;
     }
 
-    protected function getAddressSmsAlert()
+    /**
+     * @return array
+     */
+    protected function getAddressSmsAlert(): array
     {
         return [
             'label' => 'SMS Notifications',
@@ -64,7 +74,10 @@ class InstallData implements InstallDataInterface
         ];
     }
 
-    protected function addAttributeToAllForm($attributeId)
+    /**
+     * @param mixed $attributeId
+     */
+    protected function addAttributeToAllForm($attributeId): void
     {
         foreach ([
                      'adminhtml_customer_address',
@@ -96,14 +109,20 @@ class InstallData implements InstallDataInterface
         $this->quoteSetupFactory->addAttribute(
             'quote_address',
             'sms_alert',
-            ['type' => Table::TYPE_INTEGER,             'visible' => false,
-                'visible_on_front' => false, ]
+            [
+                'type' => Table::TYPE_INTEGER,
+                'visible' => false,
+                'visible_on_front' => false,
+            ]
         );
         $this->salesSetupFactory->addAttribute(
             'order_address',
             'sms_alert',
-            ['type' => Table::TYPE_INTEGER,             'visible' => false,
-                'visible_on_front' => false, ]
+            [
+                'type' => Table::TYPE_INTEGER,
+                'visible' => false,
+                'visible_on_front' => false,
+            ]
         );
     }
 }

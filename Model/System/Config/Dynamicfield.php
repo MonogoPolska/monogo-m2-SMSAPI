@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Model\System\Config;
 
 use Magento\Config\Model\Config\Backend\Serialized\ArraySerialized;

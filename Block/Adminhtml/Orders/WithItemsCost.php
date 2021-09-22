@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Orders;
+
+use Magento\Backend\Block\Widget\Grid\Container;
 
 /**
  * Orders with items cost report
@@ -8,7 +12,7 @@ namespace Smsapi\Smsapi2\Block\Adminhtml\Orders;
  * @category Smsapi
  * @package  Smsapi\Smsapi2
  */
-class WithItemsCost extends \Magento\Backend\Block\Widget\Grid\Container
+class WithItemsCost extends Container
 {
     /**
      * {@inheritdoc}

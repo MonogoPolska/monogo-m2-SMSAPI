@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
@@ -18,6 +20,9 @@ class Service implements OptionSourceInterface
      */
     protected $optionArray = [];
 
+    /**
+     * @var null
+     */
     protected $senderNames = null;
 
     /**
@@ -25,10 +30,13 @@ class Service implements OptionSourceInterface
      *
      * @return array
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         if (empty($this->optionArray)) {
-            $this->optionArray = [['value' => 'pl', 'label' => __('SMSAPI.PL')], ['value' => 'com', 'label' => __('SMSAPI.COM')]];
+            $this->optionArray = [
+                ['value' => 'pl', 'label' => __('SMSAPI.PL')],
+                ['value' => 'com', 'label' => __('SMSAPI.COM')]
+            ];
         }
         return $this->optionArray;
     }
@@ -38,7 +46,7 @@ class Service implements OptionSourceInterface
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $optionArray = [];
         foreach ($this->toOptionArray() as $option) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\System\Config\Template;
 
 use Magento\Config\Block\System\Config\Form\Field;

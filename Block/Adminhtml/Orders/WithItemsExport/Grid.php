@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Orders\WithItemsExport;
 
-use Magento\Backend\Block\Widget\Grid\Extended;
+use Exception;
+use Magento\Framework\Exception\FileSystemException;
 use Smsapi\Smsapi2\Block\Adminhtml\Grid\OrdersGrid;
 use Smsapi\Smsapi2\Block\Sales\OrderitemsExport\Grid\Renderer\Decimal;
 use Smsapi\Smsapi2\Model\ResourceModel\Sales\Order\CollectionFactory;
 
 /**
  * Class Grid
- *
  * @package Smsapi\Smsapi2\Block\Adminhtml\Orders\WithItemsExport
  */
 class Grid extends OrdersGrid
 {
+
     /**
-     * @return void
+     * @throws FileSystemException
      */
     protected function _construct()
     {
@@ -25,7 +28,7 @@ class Grid extends OrdersGrid
     }
 
     /**
-     * @return \Magento\Backend\Block\Widget\Grid
+     * @return $this|Grid
      */
     protected function _prepareCollection()
     {
@@ -51,8 +54,8 @@ class Grid extends OrdersGrid
     }
 
     /**
-     * @return Extended
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @return Grid
+     * @throws Exception
      */
     protected function _prepareColumns()
     {
@@ -60,13 +63,13 @@ class Grid extends OrdersGrid
             'header' => __('Website'),
             'index' => 'website',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('increment_id', [
             'header' => __('Order Id'),
             'index' => 'increment_id',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
 //        $this->addColumn('order_chanel', array(
@@ -80,33 +83,33 @@ class Grid extends OrdersGrid
             'header' => __('Checkout Status'),
             'index' => 'checkout_status',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('status', [
             'header' => __('Order Status'),
             'index' => 'status',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
         $this->addColumn('oms_created_at', [
             'header' => __('Sms alert'),
             'index' => 'oms_created_at',
             'type' => 'boolean',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
         $this->addColumn('created_at', [
             'header' => __('Order Date'),
             'index' => 'created_at',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('order_time', [
             'header' => __('Order Time'),
             'index' => 'order_time',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('order_currency_code', [
@@ -119,28 +122,28 @@ class Grid extends OrdersGrid
             'header' => __('Name'),
             'index' => 'shipping.firstname',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('shipping_lastname', [
             'header' => __('Lastname'),
             'index' => 'shipping.lastname',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('shipping_city', [
             'header' => __('City'),
             'index' => 'shipping.city',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('total_items_qty', [
             'header' => __('Total items'),
             'index' => 'total_items_qty',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('subtotal_incl_tax', [
@@ -149,7 +152,7 @@ class Grid extends OrdersGrid
             'type' => 'price',
             'renderer' => Decimal::class,
             'total' => 'sum',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
 //        $this->addColumn('customer_id', array(
@@ -163,27 +166,27 @@ class Grid extends OrdersGrid
             'header' => __('Shipping Postcode'),
             'index' => 'shipping_postcode',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('method', [
             'header' => __('Payment Method'),
             'index' => 'method',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('shipping_country', [
             'header' => __('Shipping Country'),
             'index' => 'shipping_country',
             'type' => 'string',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addColumn('shipping_amount', [
             'header' => __('Shipping Cost'),
             'index' => 'shipping_amount',
-            'sortable'  => false,
+            'sortable' => false,
         ]);
 
         $this->addExportType('*/export/ordersWithItemsExportCsv', __('CSV'));

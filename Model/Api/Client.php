@@ -1,9 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Model\Api;
 
+use Exception;
+use Magento\Framework\HTTP\Adapter\Curl;
 use Smsapi\Client\Curl\SmsapiHttpClient;
+use Smsapi\Client\Feature\Ping\Data\Ping;
+use Smsapi\Client\Feature\Profile\Data\Profile;
 use Smsapi\Client\Feature\Sms\Bag\SendSmsBag;
+use Smsapi\Client\Feature\Sms\Data\Sms;
 use Smsapi\Client\Service\SmsapiComService;
 use Smsapi\Client\Service\SmsapiPlService;
 use Smsapi\Smsapi2\Helper\Config;
@@ -47,19 +54,23 @@ class Client
         'pl' => 'smsapiPlService',
     ];
 
+    /**
+     * @var Curl
+     */
     private $curl;
 
     /**
      * Client constructor.
-     * @param Config      $config
-     * @param Log         $log
+     * @param Config $config
+     * @param Log $log
      * @param OauthHelper $oauthHelper
+     * @param Curl $curl
      */
     public function __construct(
         Config $config,
         Log $log,
         OauthHelper $oauthHelper,
-        \Magento\Framework\HTTP\Adapter\Curl $curl
+        Curl $curl
     ) {
         $this->config = $config;
         $this->log = $log;
@@ -70,7 +81,7 @@ class Client
     /**
      * Get Service
      *
-     * @return SmsapiPlService|SmsapiComService
+     * @return SmsapiPlService|SmsapiComService|null
      */
     public function getService()
     {
@@ -83,65 +94,75 @@ class Client
                 return (new SmsapiHttpClient())
                     ->{$this->services[$this->config->getService()]}($this->config->getApiToken());
             }
-        } catch (\Exception $e) {
-            $this->errors[] = 'getService'.$e->getMessage();
+        } catch (Exception $e) {
+            $this->errors[] = 'getService' . $e->getMessage();
         }
+        return null;
     }
 
     /**
      * Ping
      *
-     * @return \Smsapi\Client\Feature\Ping\Data\Ping
+     * @return Ping|null
      */
-    public function ping()
+    /**
+     * @return Ping|null
+     */
+    /**
+     * @return Ping
+     */
+    public function ping(): ?Ping
     {
         try {
-            return $this->getService()->pingFeature()->ping();
-        } catch (\Exception $e) {
-            $this->errors[] = 'ping'.$e->getMessage();
+            if ($this->getService()) {
+                return $this->getService()->pingFeature()->ping();
+            }
+        } catch (Exception $e) {
+            $this->errors[] = 'ping' . $e->getMessage();
         }
+        return null;
     }
 
     /**
      * Get current profile
-     *
-     * @return \Smsapi\Client\Feature\Profile\Data\Profile
+     * @return Profile|null
      */
-    public function getProfile()
+    public function getProfile(): ?Profile
     {
         try {
-            return $this->getService()->profileFeature()->findProfile();
-        } catch (\Exception $e) {
-            $this->errors[] = 'getProfile '.$e->getMessage();
+            if ($this->getService()) {
+                return $this->getService()->profileFeature()->findProfile();
+            }
+        } catch (Exception $e) {
+            $this->errors[] = 'getProfile ' . $e->getMessage();
         }
+        return null;
     }
 
     /**
      * Get Senders
-     *
-     * return array
+     * @return array|null
      */
-    public function getSenders()
+    public function getSenders(): ?array
     {
         try {
-            if($this->getService()) {
+            if ($this->getService()) {
                 return $this->getService()->smsFeature()->sendernameFeature()->findSendernames();
-            } else
-            {return [];}
-        } catch (\Exception $e) {
-            $this->errors[] = 'getSenders '.$e->getMessage();
+            }
+            return [];
+        } catch (Exception $e) {
+            $this->errors[] = 'getSenders ' . $e->getMessage();
         }
+        return null;
     }
 
     /**
      * Send SMS message
-     *
-     * @param string $phoneNumber Phone number
-     * @param string $message     Message
-     *
-     * @return \Smsapi\Client\Feature\Sms\Data\Sms
+     * @param string $phoneNumber
+     * @param string $message
+     * @return Sms|null
      */
-    public function send($phoneNumber, $message)
+    public function send(string $phoneNumber, string $message): ?Sms
     {
         $this->log->log('sms send init for ' . $phoneNumber . ' with message ' . $message);
 
@@ -152,9 +173,10 @@ class Client
             $sms->from = $this->config->getSender();
             $sms->encoding = 'utf-8';
             return $this->getService()->smsFeature()->sendSms($sms);
-        } catch (\Exception $e) {
-            $this->errors[] = 'sendSms '.$e->getMessage();
+        } catch (Exception $e) {
+            $this->errors[] = 'sendSms ' . $e->getMessage();
         }
+        return null;
     }
 
     /**
@@ -162,7 +184,7 @@ class Client
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         if (!empty($this->errors)) {
             return array_unique($this->errors);

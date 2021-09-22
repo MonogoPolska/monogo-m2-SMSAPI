@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -27,14 +29,14 @@ class Log extends AbstractHelper
 
     /**
      * Log constructor.
-     * @param Context                       $context
-     * @param Logger                        $logger
-     * @param \Smsapi\Smsapi2\Helper\Config $config
+     * @param Context $context
+     * @param Logger $logger
+     * @param Config $config
      */
     public function __construct(
         Context $context,
         Logger $logger,
-        \Smsapi\Smsapi2\Helper\Config $config
+        Config $config
     ) {
         $this->logger = $logger;
         $this->config = $config;
@@ -46,7 +48,7 @@ class Log extends AbstractHelper
      *
      * @return null|Logger
      */
-    protected function getLogger()
+    protected function getLogger(): ?Logger
     {
         return $this->logger;
     }
@@ -58,7 +60,7 @@ class Log extends AbstractHelper
      *
      * @return void
      */
-    public function log($message)
+    public function log($message): void
     {
         $enabled
             = $this->config->getEnableLog();

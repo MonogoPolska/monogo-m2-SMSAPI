@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Orders;
 
 use Magento\Backend\Block\Widget\Grid\Container;

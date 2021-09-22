@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Model\Message;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\Notification\MessageInterface;
+use Magento\Framework\Phrase;
 use Smsapi\Smsapi2\Helper\Config;
 
 /**
@@ -33,9 +37,9 @@ class SmsLimitExceedMessage implements MessageInterface
     /**
      * SmsLimitExceedMessage constructor.
      *
-     * @param Config     $config     Config
+     * @param Config $config Config
      * @param Filesystem $filesystem Filesystem
-     * @param File       $file       File
+     * @param File $file File
      */
     public function __construct(
         Config $config,
@@ -48,9 +52,10 @@ class SmsLimitExceedMessage implements MessageInterface
     }
 
     /**
-     * @return bool|int
+     * @return bool
+     * @throws FileSystemException
      */
-    public function isDisplayed()
+    public function isDisplayed(): bool
     {
         $varRootDir = $this->_filesystem->getDirectoryRead(DirectoryList::VAR_DIR)->getAbsolutePath();
         return $this->_file->isExists($varRootDir . 'smsapi_limit');
@@ -59,7 +64,7 @@ class SmsLimitExceedMessage implements MessageInterface
     /**
      * @return string
      */
-    public function getIdentity()
+    public function getIdentity(): string
     {
         return 'smsapi_smslimit_notification';
     }
@@ -67,9 +72,9 @@ class SmsLimitExceedMessage implements MessageInterface
     /**
      * Retrieve message text
      *
-     * @return \Magento\Framework\Phrase
+     * @return Phrase
      */
-    public function getText()
+    public function getText(): Phrase
     {
         return __('Points Limit Exceeded');
     }
@@ -77,7 +82,7 @@ class SmsLimitExceedMessage implements MessageInterface
     /**
      * @return int
      */
-    public function getSeverity()
+    public function getSeverity(): int
     {
         return self::SEVERITY_CRITICAL;
     }

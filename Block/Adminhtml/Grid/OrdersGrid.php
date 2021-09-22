@@ -1,6 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Grid;
+
+use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Block\Widget\Grid\Extended;
+use Magento\Backend\Helper\Data;
+use Smsapi\Smsapi2\Model\ResourceModel\Sales\Order\CollectionFactory;
 
 /**
  * Adminhtml orders with items grid block
@@ -8,7 +15,7 @@ namespace Smsapi\Smsapi2\Block\Adminhtml\Grid;
  * @category Smsapi
  * @package  Smsapi\Smsapi2
  */
-class OrdersGrid extends \Magento\Backend\Block\Widget\Grid\Extended
+class OrdersGrid extends Extended
 {
     /**
      * Stores current currency code
@@ -25,20 +32,21 @@ class OrdersGrid extends \Magento\Backend\Block\Widget\Grid\Extended
     protected $_storeIds = [];
 
     /**
-     * @var \Smsapi\Smsapi2\Model\ResourceModel\Sales\Order\CollectionFactory
+     * @var CollectionFactory
      */
     protected $_salesOrderFactory;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context                           $context
-     * @param \Magento\Backend\Helper\Data                                      $backendHelper
-     * @param \Smsapi\Smsapi2\Model\ResourceModel\Sales\Order\CollectionFactory $orderItemCollectionFactory
-     * @param array                                                             $data
+     * OrdersGrid constructor.
+     * @param Context $context
+     * @param Data $backendHelper
+     * @param CollectionFactory $orderCollectionFactory
+     * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Backend\Helper\Data $backendHelper,
-        \Smsapi\Smsapi2\Model\ResourceModel\Sales\Order\CollectionFactory $orderCollectionFactory,
+        Context $context,
+        Data $backendHelper,
+        CollectionFactory $orderCollectionFactory,
         array $data = []
     ) {
         $this->_salesOrderFactory = $orderCollectionFactory;
@@ -49,10 +57,10 @@ class OrdersGrid extends \Magento\Backend\Block\Widget\Grid\Extended
      * StoreIds setter
      * @codeCoverageIgnore
      *
-     * @param  array $storeIds
+     * @param array $storeIds
      * @return $this
      */
-    public function setStoreIds($storeIds)
+    public function setStoreIds(array $storeIds)
     {
         $this->_storeIds = $storeIds;
         return $this;

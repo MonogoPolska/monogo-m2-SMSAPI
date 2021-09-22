@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Controller\Adminhtml\Sales;
 
 use Smsapi\Smsapi2\Controller\Adminhtml\AbstractReport;
@@ -17,7 +19,7 @@ class Family extends AbstractReport
      *
      * @return void
      */
-    public function execute()
+    public function execute(): void
     {
         $this->_initAction()->_setActiveMenu(
             'Smsapi_Smsapi2::reports_sales_family'

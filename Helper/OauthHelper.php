@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Helper;
 
 use Magento\Framework\App\Cache\Frontend\Pool;
@@ -62,7 +64,6 @@ class OauthHelper
      */
     protected $urlBuilder;
 
-
     /**
      * OauthHelper constructor.
      * @param Log $log
@@ -101,16 +102,16 @@ class OauthHelper
      * @param $code
      * @return bool
      */
-    public function authorize($code)
+    public function authorize(string $code): bool
     {
         return $this->oauthGetToken($code);
     }
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      */
-    public function oauthGetToken($code)
+    public function oauthGetToken(string $code): bool
     {
         $authArray = [
             'client_id' => $this->config->getOauthClientId(),
@@ -141,11 +142,10 @@ class OauthHelper
         return false;
     }
 
-
     /**
      * @return string
      */
-    public function prepareRedirectUrl()
+    public function prepareRedirectUrl(): string
     {
         return $this->urlBuilder->getUrl('smsapi/oauth/callback');
     }
@@ -153,35 +153,46 @@ class OauthHelper
     /**
      * @param $value
      */
-    public function setOauthBearer($value)
+    public function setOauthBearer($value): void
     {
-        $this->configWriter->save($this->config->getOauthBearerPath(), $value,
-            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
+        $this->configWriter->save(
+            $this->config->getOauthBearerPath(),
+            $value,
+            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            $scopeId = 0
+        );
     }
 
     /**
      * @param $value
      */
-    public function setOauthRefreshToken($value)
+    public function setOauthRefreshToken($value): void
     {
-        $this->configWriter->save($this->config->getOauthRefreshTokenPath(), $value,
-            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
+        $this->configWriter->save(
+            $this->config->getOauthRefreshTokenPath(),
+            $value,
+            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            $scopeId = 0
+        );
     }
 
     /**
      * @param $value
      */
-    public function setOauthEnabled($value)
+    public function setOauthEnabled($value): void
     {
-        $this->configWriter->save($this->config->getOauthEnable(), $value,
-            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
+        $this->configWriter->save(
+            $this->config->getOauthEnable(),
+            $value,
+            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            $scopeId = 0
+        );
     }
-
 
     /**
      *
      */
-    public function flushCacheCache()
+    public function flushCacheCache(): void
     {
         $_types = [
             'config',
@@ -198,7 +209,7 @@ class OauthHelper
     /**
      * @return string
      */
-    public function getOauthAuthorizationUrl()
+    public function getOauthAuthorizationUrl(): string
     {
         $base = 'https://oauth.smsapi.io/oauth/access?';
         $params = [

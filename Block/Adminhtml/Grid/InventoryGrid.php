@@ -1,6 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Grid;
+
+use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Block\Widget\Grid\Extended;
+use Magento\Backend\Helper\Data;
+use Smsapi\Smsapi2\Model\ResourceModel\Inventory\CollectionFactory;
 
 /**
  * Adminhtml inventory report grid block
@@ -8,7 +15,7 @@ namespace Smsapi\Smsapi2\Block\Adminhtml\Grid;
  * @category Smsapi
  * @package  Smsapi\Smsapi2
  */
-class InventoryGrid extends \Magento\Backend\Block\Widget\Grid\Extended
+class InventoryGrid extends Extended
 {
     /**
      * Ids of current stores
@@ -18,20 +25,20 @@ class InventoryGrid extends \Magento\Backend\Block\Widget\Grid\Extended
     protected $_storeIds = [];
 
     /**
-     * @var \Smsapi\Smsapi2\Model\ResourceModel\Inventory\CollectionFactory
+     * @var CollectionFactory
      */
     protected $_inventoryFactory;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context                         $context
-     * @param \Magento\Backend\Helper\Data                                    $backendHelper
-     * @param \Smsapi\Smsapi2\Model\ResourceModel\Inventory\CollectionFactory $inventoryFactory,
-     * @param array                                                           $data
+     * @param Context $context
+     * @param Data $backendHelper
+     * @param CollectionFactory $inventoryFactory ,
+     * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Backend\Helper\Data $backendHelper,
-        \Smsapi\Smsapi2\Model\ResourceModel\Inventory\CollectionFactory $inventoryFactory,
+        Context $context,
+        Data $backendHelper,
+        CollectionFactory $inventoryFactory,
         array $data = []
     ) {
         $this->_inventoryFactory = $inventoryFactory;
@@ -42,10 +49,10 @@ class InventoryGrid extends \Magento\Backend\Block\Widget\Grid\Extended
      * StoreIds setter
      * @codeCoverageIgnore
      *
-     * @param  array $storeIds
+     * @param array $storeIds
      * @return $this
      */
-    public function setStoreIds($storeIds)
+    public function setStoreIds(array $storeIds)
     {
         $this->_storeIds = $storeIds;
         return $this;

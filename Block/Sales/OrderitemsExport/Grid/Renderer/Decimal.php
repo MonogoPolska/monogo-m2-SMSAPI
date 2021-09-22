@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Sales\OrderitemsExport\Grid\Renderer;
 
 use Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer;
+use Magento\Framework\DataObject;
 
 /**
  * Class Decimal
@@ -13,11 +16,10 @@ class Decimal extends AbstractRenderer
 {
     /**
      * Renders grid column
-     *
-     * @param  \Magento\Framework\DataObject $row
+     * @param DataObject $row
      * @return array|mixed|string|null
      */
-    public function render(\Magento\Framework\DataObject $row)
+    public function render(DataObject $row)
     {
         $data = $row->getData($this->getColumn()->getIndex());
         if ($data) {

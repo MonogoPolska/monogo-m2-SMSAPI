@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Form\Field;
 
 use Magento\Framework\View\Element\Context;
@@ -30,9 +32,9 @@ class StatusFrom extends Select
     /**
      * Type constructor.
      *
-     * @param \Magento\Framework\View\Element\Context                           $context           Context
-     * @param \Magento\Sales\Model\ResourceModel\Order\Status\CollectionFactory $collectionFactory CollectionFactory
-     * @param array                                                             $data              Data
+     * @param Context $context Context
+     * @param CollectionFactory $collectionFactory CollectionFactory
+     * @param array $data Data
      */
     public function __construct(
         Context $context,
@@ -48,7 +50,7 @@ class StatusFrom extends Select
      *
      * @return array
      */
-    public function getStatusOptions()
+    public function getStatusOptions(): array
     {
         if ($this->statusOptions === null) {
             $this->statusOptions = ['any' => __('Any')];
@@ -70,7 +72,7 @@ class StatusFrom extends Select
      *
      * @return mixed
      */
-    public function setInputName($value)
+    public function setInputName(string $value)
     {
         return $this->setName($value);
     }
@@ -80,11 +82,11 @@ class StatusFrom extends Select
      *
      * @return string
      */
-    public function _toHtml()
+    public function _toHtml(): string
     {
         if (!$this->getOptions()) {
             foreach ($this->getStatusOptions() as $rewriteType => $rewriteLabel) {
-                $this->addOption($rewriteType, addslashes($rewriteLabel));
+                $this->addOption($rewriteType, addslashes((string)$rewriteLabel));
             }
         }
         return parent::_toHtml();

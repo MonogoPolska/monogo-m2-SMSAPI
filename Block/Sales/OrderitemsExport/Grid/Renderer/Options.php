@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Sales\OrderitemsExport\Grid\Renderer;
 
+use Exception;
 use Magento\Backend\Block\Context;
 use Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer;
 use Magento\Framework\DataObject;
@@ -19,6 +22,12 @@ class Options extends AbstractRenderer
      */
     protected $orderRepository;
 
+    /**
+     * Options constructor.
+     * @param OrderRepositoryInterface $orderRepository
+     * @param Context $context
+     * @param array $data
+     */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         Context $context,
@@ -31,7 +40,7 @@ class Options extends AbstractRenderer
     /**
      *  Renders grid column
      *
-     * @param  DataObject   $row
+     * @param DataObject $row
      * @return mixed|string
      */
     public function render(DataObject $row)
@@ -40,7 +49,7 @@ class Options extends AbstractRenderer
             if ($row->getData('row_total') == 0) {
                 $data = $row->getData('item_id');
                 $item = $this->orderRepository->get($data);
-                if (isset($item->getProductOptions()['options']) && sizeof($item->getProductOptions()['options'])>0) {
+                if (isset($item->getProductOptions()['options']) && sizeof($item->getProductOptions()['options']) > 0) {
                     $value = [];
                     foreach ($item->getProductOptions()['options'] as $option) {
                         $value[] = trim($option['print_value']);
@@ -52,7 +61,7 @@ class Options extends AbstractRenderer
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return "";
         }
     }

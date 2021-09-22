@@ -1,6 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Model\ResourceModel\Sales\Order;
+
+use DateTime;
+use DateTimeInterface;
+use Exception;
+use Magento\Sales\Model\ResourceModel\Order;
 
 /**
  * Collection of Magento\Sales\Model\Order
@@ -25,7 +32,7 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
      */
     protected function _construct()
     {
-        $this->_init(\Magento\Sales\Model\Order::class, \Magento\Sales\Model\ResourceModel\Order::class);
+        $this->_init(\Magento\Sales\Model\Order::class, Order::class);
     }
 
     /**
@@ -33,7 +40,7 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
      *
      * @return array
      */
-    protected function _getSelectedColumns()
+    protected function _getSelectedColumns(): array
     {
         $connection = $this->getConnection();
         $this->_periodFormat = $connection->getDateFormatSql('created_at', '%Y-%m-%d');
@@ -55,27 +62,27 @@ class Collection extends \Smsapi\Smsapi2\Model\ResourceModel\Collection
     /**
      * Set interval
      * @codeCoverageIgnore
-     *
-     * @param  \DateTimeInterface $fromDate
-     * @param  \DateTimeInterface $toDate
+     * @param DateTimeInterface $fromDate
+     * @param DateTimeInterface $toDate
      * @return $this
+     * @throws Exception
      */
-    public function setInterval(\DateTimeInterface $fromDate, \DateTimeInterface $toDate)
+    public function setInterval(DateTimeInterface $fromDate, DateTimeInterface $toDate): self
     {
-        $this->_from = new \DateTime($fromDate->format('Y-m-d'), $fromDate->getTimezone());
-        $this->_to = new \DateTime($toDate->format('Y-m-d'), $toDate->getTimezone());
+        $this->_from = new DateTime($fromDate->format('Y-m-d'), $fromDate->getTimezone());
+        $this->_to = new DateTime($toDate->format('Y-m-d'), $toDate->getTimezone());
 
         return $this;
     }
 
     /**
-       * Prepare for orders with items cost report
-       *
-       * @param $storeIds
-       * @param  array $filter
-       * @return $this
-       */
-    public function prepareForWithItemsExportReport($storeIds, $filter = [])
+     * Prepare for orders with items cost report
+     *
+     * @param $storeIds
+     * @param  array $filter
+     * @return $this
+     */
+    public function prepareForWithItemsExportReport($storeIds, $filter = []): self
     {
         $select = $this->getSelect();
 

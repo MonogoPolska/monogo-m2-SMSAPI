@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\System\Config;
 
+use Exception;
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
+use Magento\Framework\DataObject;
+use Magento\Framework\View\Element\Html\Select;
 
 /**
  * Dynamicfield Block
@@ -14,29 +19,29 @@ use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 class Dynamicfield extends AbstractFieldArray
 {
     /**
-     * @var \Magento\Framework\View\Element\Html\Select
+     * @var Select
      */
     private $statusRenderer;
 
     /**
-     * @var \Magento\Framework\View\Element\Html\Select
+     * @var Select
      */
     private $statusFromRenderer;
 
     /**
-     * @var \Magento\Framework\View\Element\Html\Select
+     * @var Select
      */
     private $yesnoRenderer;
 
     /**
-     * @var \Magento\Framework\View\Element\Html\Select
+     * @var Select
      */
     private $notificationRenderer;
 
     /**
      * Get cache type type renderer
      *
-     * @return \Magento\Framework\View\Element\Html\Select
+     * @return Select
      */
     protected function getStatusRenderer()
     {
@@ -48,7 +53,7 @@ class Dynamicfield extends AbstractFieldArray
                     ['data' => ['is_render_to_js_template' => true]]
                 );
                 $this->statusRenderer->setClass('customer_group_select required-entry validate-select validate-no-empty');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
         return $this->statusRenderer;
@@ -57,9 +62,9 @@ class Dynamicfield extends AbstractFieldArray
     /**
      * Get cache type type renderer
      *
-     * @return \Magento\Framework\View\Element\Html\Select
+     * @return Select
      */
-    protected function getStatusFromRenderer()
+    protected function getStatusFromRenderer(): Select
     {
         if (!$this->statusFromRenderer) {
             try {
@@ -69,7 +74,7 @@ class Dynamicfield extends AbstractFieldArray
                     ['data' => ['is_render_to_js_template' => true]]
                 );
                 $this->statusFromRenderer->setClass('customer_group_select required-entry validate-no-empty');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
         return $this->statusFromRenderer;
@@ -78,9 +83,9 @@ class Dynamicfield extends AbstractFieldArray
     /**
      * Get Yes No renderer
      *
-     * @return \Magento\Framework\View\Element\Html\Select
+     * @return Select
      */
-    protected function getYesNoRenderer()
+    protected function getYesNoRenderer(): Select
     {
         if (!$this->yesnoRenderer) {
             try {
@@ -90,7 +95,7 @@ class Dynamicfield extends AbstractFieldArray
                     ['data' => ['is_render_to_js_template' => true]]
                 );
                 $this->yesnoRenderer->setClass('customer_group_select required-entry validate-select');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
         return $this->yesnoRenderer;
@@ -99,9 +104,9 @@ class Dynamicfield extends AbstractFieldArray
     /**
      * Get Yes No renderer
      *
-     * @return \Magento\Framework\View\Element\Html\Select
+     * @return Select
      */
-    protected function getNotificationRenderer()
+    protected function getNotificationRenderer(): Select
     {
         if (!$this->notificationRenderer) {
             try {
@@ -111,7 +116,7 @@ class Dynamicfield extends AbstractFieldArray
                     ['data' => ['is_render_to_js_template' => true]]
                 );
                 $this->notificationRenderer->setClass('customer_group_select required-entry validate-select');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
         return $this->notificationRenderer;
@@ -181,7 +186,7 @@ class Dynamicfield extends AbstractFieldArray
     /**
      * {@inheritDoc}
      */
-    protected function _prepareArrayRow(\Magento\Framework\DataObject $row)
+    protected function _prepareArrayRow(DataObject $row)
     {
         $optionExtraAttr = [];
         $optionExtraAttr['option_' . $this->getStatusRenderer()->calcOptionHash($row->getData('col_1'))] =
@@ -200,10 +205,10 @@ class Dynamicfield extends AbstractFieldArray
     /**
      * {@inheritDoc}
      */
-    public function renderCellTemplate($columnName)
+    public function renderCellTemplate($columnName): string
     {
         if (empty($this->_columns[$columnName])) {
-            throw new \Exception('Wrong column name specified.');
+            throw new Exception('Wrong column name specified.');
         }
         $column = $this->_columns[$columnName];
         $inputName = $this->_getCellInputElementName($columnName);

@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Inventory;
+
+use Magento\Backend\Block\Widget\Grid\Container;
 
 /**
  * Inventory report
@@ -8,7 +12,7 @@ namespace Smsapi\Smsapi2\Block\Adminhtml\Inventory;
  * @category Smsapi
  * @package  Smsapi\Smsapi2
  */
-class Index extends \Magento\Backend\Block\Widget\Grid\Container
+class Index extends Container
 {
     /**
      * {@inheritdoc}

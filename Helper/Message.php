@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Pricing\Helper\Data as Currency;
+use Magento\Sales\Model\Order;
 use Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status;
 
 /**
@@ -14,7 +17,7 @@ use Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status;
 class Message extends AbstractHelper
 {
     /**
-     * @var \Smsapi\Smsapi2\Helper\Config
+     * @var Config
      */
     protected $config;
 
@@ -31,16 +34,16 @@ class Message extends AbstractHelper
     /**
      * Message constructor.
      *
-     * @param Context                                           $context  Context
-     * @param \Smsapi\Smsapi2\Helper\Config                     $config   Config
-     * @param Currency                                          $currency Currency
-     * @param \Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status $status   Status
+     * @param Context $context Context
+     * @param Config $config Config
+     * @param Currency $currency Currency
+     * @param Status $status Status
      */
     public function __construct(
         Context $context,
-        \Smsapi\Smsapi2\Helper\Config $config,
+        Config $config,
         Currency $currency,
-        \Smsapi\Smsapi2\Block\Adminhtml\Form\Field\Status $status
+        Status $status
     ) {
         $this->config = $config;
         $this->currency = $currency;
@@ -50,16 +53,22 @@ class Message extends AbstractHelper
 
     /**
      * Parse variables
-     *
-     * @param string                     $message Message
-     * @param \Magento\Sales\Model\Order $object  Model
-     *
+     * @param string $message
+     * @param Order $object
      * @return string
      */
-    public function parseMessage($message, $object)
+    public function parseMessage(string $message, Order $object): string
     {
-        $message = str_replace('{NAME}', $object->getCustomerFirstname() ? $object->getCustomerFirstname() : $object->getBillingAddress()->getFirstname(), $message);
-        $message = str_replace('{LASTNAME}', $object->getCustomerLastname() ? $object->getCustomerLastname() : $object->getBillingAddress()->getLastname(), $message);
+        $message = str_replace(
+            '{NAME}',
+            $object->getCustomerFirstname() ? $object->getCustomerFirstname() : $object->getBillingAddress()->getFirstname(),
+            $message
+        );
+        $message = str_replace(
+            '{LASTNAME}',
+            $object->getCustomerLastname() ? $object->getCustomerLastname() : $object->getBillingAddress()->getLastname(),
+            $message
+        );
         $message = str_replace('{EMAIL}', $object->getCustomerEmail(), $message);
         $message = str_replace(
             '{ORDERVALUEGROSS}',
@@ -87,12 +96,10 @@ class Message extends AbstractHelper
 
     /**
      * Get Status label by Code
-     *
-     * @param string $statusCode Status Code
-     *
-     * @return string
+     * @param string $statusCode
+     * @return string|null
      */
-    protected function getStatusLabel($statusCode)
+    protected function getStatusLabel(string $statusCode): ?string
     {
         $statusArray = $this->status->getStatusOptions();
         if (key_exists($statusCode, $statusArray)) {
@@ -101,11 +108,10 @@ class Message extends AbstractHelper
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $object Model
-     *
+     * @param Order $object
      * @return string
      */
-    private function getTrackingNumbersForSMS($object)
+    private function getTrackingNumbersForSMS(Order $object): string
     {
         $trackNumbers = [];
         $tracksCollection = $object->getTracksCollection();

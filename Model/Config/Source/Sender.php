@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
@@ -63,10 +65,9 @@ class Sender implements OptionSourceInterface
 
     /**
      * Options getter
-     *
-     * @return array
+     * @return array|array[]
      */
-    public function toOptionArray()
+    public function toOptionArray():array
     {
         if (empty($this->optionArray)) {
             $senders = $this->client->getSenders();
@@ -88,7 +89,7 @@ class Sender implements OptionSourceInterface
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $optionArray = [];
         foreach ($this->toOptionArray() as $option) {

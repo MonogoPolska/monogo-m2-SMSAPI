@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Logger;
 
 use Magento\Framework\Logger\Handler\Base;

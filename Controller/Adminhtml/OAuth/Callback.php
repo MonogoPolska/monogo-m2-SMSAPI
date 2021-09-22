@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Smsapi\Smsapi2\Controller\Adminhtml\OAuth;
 
+use Exception;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\AuthorizationException;
@@ -14,6 +15,10 @@ use Smsapi\Smsapi2\Model\SmsapiCodeManagement;
 use \Smsapi\Smsapi2\Helper\OauthHelper;
 use Magento\Backend\Model\UrlInterface;
 
+/**
+ * Class Callback
+ * @package Smsapi\Smsapi2\Controller\Adminhtml\OAuth
+ */
 class Callback extends Action
 {
 
@@ -67,10 +72,11 @@ class Callback extends Action
             $this->messageManager->addSuccessMessage(__('Authorization was successful.'));
         } catch (AuthorizationException $exception) {
             $this->messageManager->addErrorMessage($exception->getMessage());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->messageManager->addExceptionMessage(
                 $exception,
-                __('Something went wrong.'));
+                __('Something went wrong.')
+            );
         }
         $url = $this->urlInterface->getUrl('adminhtml/system_config/edit/section/smsapi');
         return $this->_redirect($url);

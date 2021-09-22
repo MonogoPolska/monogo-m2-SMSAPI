@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Observer\Sales\Order\Save;
 
+use Exception;
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Model\AbstractModel;
+use Magento\Sales\Model\Order;
 use Smsapi\Smsapi2\Helper\Config;
 use Smsapi\Smsapi2\Helper\Log;
 use Smsapi\Smsapi2\Helper\Message;
@@ -38,7 +44,7 @@ class SendSms implements ObserverInterface
     protected $client;
 
     /**
-     * @var \Magento\Sales\Model\Order
+     * @var Order
      */
     protected $order;
 
@@ -50,10 +56,10 @@ class SendSms implements ObserverInterface
     /**
      * SendSms constructor.
      *
-     * @param Config  $config  Config
-     * @param Log     $log     Log
+     * @param Config $config Config
+     * @param Log $log Log
      * @param Message $message Message
-     * @param Client  $client  Client
+     * @param Client $client Client
      */
     public function __construct(
         Config $config,
@@ -70,15 +76,15 @@ class SendSms implements ObserverInterface
     /**
      * Send SMS on configured status
      *
-     * @param \Magento\Framework\Event\Observer $observer Observer
+     * @param Observer $observer Observer
      *
      * @return void
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer): void
     {
         $this->order = $observer->getEvent()->getOrder();
-        if ($this->order instanceof \Magento\Framework\Model\AbstractModel) {
-            /** @var $order \Magento\Sales\Model\Order */
+        if ($this->order instanceof AbstractModel) {
+            /** @var $order Order */
             $this->send();
         }
     }
@@ -88,16 +94,22 @@ class SendSms implements ObserverInterface
      *
      * @return void
      */
-    protected function send()
+    protected function send(): void
     {
         if ($this->getCurrentStatus() != $this->getPreviousStatus()) {
             $templates = $this->config->getTemplates();
             if (is_array($templates)) {
                 $template = null;
-                if ($this->getPreviousStatus() !== null && key_exists($this->getPreviousStatus() . '_' . $this->getCurrentStatus(), $templates)) {
+                if ($this->getPreviousStatus() !== null && key_exists(
+                    $this->getPreviousStatus() . '_' . $this->getCurrentStatus(),
+                    $templates
+                )) {
                     $template = $templates[$this->getPreviousStatus() . '_' . $this->getCurrentStatus()];
                     $this->setSendSmsFlag(true);
-                } elseif ($this->getPreviousStatus() === null && key_exists('new_' . $this->getCurrentStatus(), $templates)) {
+                } elseif ($this->getPreviousStatus() === null && key_exists(
+                    'new_' . $this->getCurrentStatus(),
+                    $templates
+                )) {
                     $template = $templates['new_' . $this->getCurrentStatus()];
                     $this->setSendSmsFlag(true);
                 } elseif (key_exists($this->getCurrentStatus(), $templates)) {
@@ -112,12 +124,19 @@ class SendSms implements ObserverInterface
                     $phoneNumber = $this->getPhoneNumber();
                     if ($this->getSendSmsFlag()) {
                         if ($phoneNumber && ($template['send_to_client'] && $this->order->getShippingAddress()->getSmsAlert())) {
-                            $result = $this->client->send($this->order->getShippingAddress()->getTelephone(), $smsMessage);
-                            $this->order->addStatusToHistory($this->getCurrentStatus(), __('Sended SMS content:') . ' ' . $smsMessage, true);
+                            $result = $this->client->send(
+                                $this->order->getShippingAddress()->getTelephone(),
+                                $smsMessage
+                            );
+                            $this->order->addStatusToHistory(
+                                $this->getCurrentStatus(),
+                                __('Sended SMS content:') . ' ' . $smsMessage,
+                                true
+                            );
                             $this->smsLog($result);
                         }
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                 }
                 if ($template['send_cc']) {
                     try {
@@ -128,7 +147,7 @@ class SendSms implements ObserverInterface
                                 $this->notificationLog($result);
                             }
                         }
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                     }
                 }
             }
@@ -140,7 +159,7 @@ class SendSms implements ObserverInterface
      *
      * @return string
      */
-    protected function getCurrentStatus()
+    protected function getCurrentStatus(): string
     {
         return $this->order->getStatus();
     }
@@ -150,7 +169,7 @@ class SendSms implements ObserverInterface
      *
      * @return string
      */
-    protected function getPreviousStatus()
+    protected function getPreviousStatus(): ?string
     {
         $origData = $this->order->getOrigData();
         if (!empty($origData) && key_exists('status', $origData)) {
@@ -165,7 +184,7 @@ class SendSms implements ObserverInterface
      *
      * @return string|null
      */
-    public function getPhoneNumber()
+    public function getPhoneNumber(): ?string
     {
         if (!empty($this->order->getShippingAddress()->getTelephone())) {
             return $this->order->getShippingAddress()->getTelephone();
@@ -182,10 +201,8 @@ class SendSms implements ObserverInterface
 
     /**
      * Log sent sms
-     *
-     * @return void
      */
-    private function smsLog($result)
+    private function smsLog($result): void
     {
         $this->log->log(
             'Message ' . $result->id . ' has been sent to '
@@ -207,9 +224,10 @@ class SendSms implements ObserverInterface
     /**
      * Log sent sms notification
      *
+     * @param $result
      * @return void
      */
-    private function notificationLog($result)
+    private function notificationLog($result): void
     {
         $this->log->log(
             'Notification message ' . $result->id . ' has been sent to '
@@ -223,7 +241,7 @@ class SendSms implements ObserverInterface
     /**
      * @return boolean
      */
-    public function getSendSmsFlag()
+    public function getSendSmsFlag(): bool
     {
         return $this->sendSmsFlag;
     }
@@ -231,7 +249,7 @@ class SendSms implements ObserverInterface
     /**
      * @param boolean $sendSmsFlag
      */
-    public function setSendSmsFlag($sendSmsFlag)
+    public function setSendSmsFlag(bool $sendSmsFlag): void
     {
         $this->sendSmsFlag = $sendSmsFlag;
     }

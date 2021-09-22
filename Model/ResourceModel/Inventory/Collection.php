@@ -1,6 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Model\ResourceModel\Inventory;
+
+use Magento\CatalogInventory\Model\ResourceModel\Stock\Item;
+use Magento\CatalogInventory\Model\Stock;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
  * Collection of Magento\CatalogInventory\Model\Stock
@@ -9,7 +15,7 @@ namespace Smsapi\Smsapi2\Model\ResourceModel\Inventory;
  * @package  Jti\Reports
  * @author   Tomasz Gregorczyk (external) <tomasz.gregorczyk@monogo.pl>
  */
-class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+class Collection extends AbstractCollection
 {
     /**
      * Fields map for correlation names & real selected fields
@@ -25,16 +31,16 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
      */
     protected function _construct()
     {
-        $this->_init(\Magento\CatalogInventory\Model\Stock::class, \Magento\CatalogInventory\Model\ResourceModel\Stock\Item::class);
+        $this->_init(Stock::class, Item::class);
     }
 
     /**
      * Add store ids to filter
      *
-     * @param  array $storeIds
+     * @param array $storeIds
      * @return $this
      */
-    public function addStoreFilter($storeIds)
+    public function addStoreFilter(array $storeIds): self
     {
         $this->addFieldToFilter('store_id', ['in' => $storeIds]);
         return $this;
@@ -43,18 +49,18 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     /**
      * Prepare for summary report
      *
-     * @param  array  $storeIds
-     * @param  string $filter
+     * @param array $storeIds
+     * @param null $filter
      * @return $this
      */
-    public function prepareForInventoryReport($storeIds, $filter = null)
+    public function prepareForInventoryReport(array $storeIds, $filter = null): self
     {
         $select = $this->getSelect();
 
         $select->columns([
-            'stock_id'     => 'main_table.item_id',
-            'sku'          => 'cp.sku',
-            'qty'          => 'main_table.qty',
+            'stock_id' => 'main_table.item_id',
+            'sku' => 'cp.sku',
+            'qty' => 'main_table.qty',
         ]);
 
         $select->joinLeft(['cp' => 'catalog_product_entity'], 'cp.entity_id = main_table.product_id');

@@ -1,6 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Inventory\Index;
+
+use Exception;
+use Magento\Framework\Exception\FileSystemException;
+use Smsapi\Smsapi2\Block\Adminhtml\Grid\InventoryGrid;
+use Smsapi\Smsapi2\Model\ResourceModel\Inventory\Collection;
 
 /**
  * Inventory report
@@ -8,10 +15,10 @@ namespace Smsapi\Smsapi2\Block\Adminhtml\Inventory\Index;
  * @category Smsapi
  * @package  Smsapi\Smsapi2
  */
-class Grid extends \Smsapi\Smsapi2\Block\Adminhtml\Grid\InventoryGrid
+class Grid extends InventoryGrid
 {
     /**
-     * @return void
+     * @throws FileSystemException
      */
     protected function _construct()
     {
@@ -20,11 +27,11 @@ class Grid extends \Smsapi\Smsapi2\Block\Adminhtml\Grid\InventoryGrid
     }
 
     /**
-     * @return \Magento\Backend\Block\Widget\Grid
+     * @return $this|Grid
      */
     protected function _prepareCollection()
     {
-        /** @var $collection \Smsapi\Smsapi2\Model\ResourceModel\Inventory\Collection */
+        /** @var $collection Collection */
         $collection = $this->_inventoryFactory->create();
         $this->setCollection($collection);
         $collection->prepareForInventoryReport($this->_storeIds);
@@ -33,8 +40,8 @@ class Grid extends \Smsapi\Smsapi2\Block\Adminhtml\Grid\InventoryGrid
     }
 
     /**
-     * @return \Magento\Backend\Block\Widget\Grid\Extended
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @return Grid
+     * @throws Exception
      */
     protected function _prepareColumns()
     {

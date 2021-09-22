@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Block\Adminhtml\Form\Field;
 
-use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
 
 /**
@@ -22,24 +23,11 @@ class Yesno extends Select
     private $selectOptions;
 
     /**
-     * Type constructor.
-     *
-     * @param \Magento\Framework\View\Element\Context $context Context
-     * @param array                                   $data    Data
-     */
-    public function __construct(
-        Context $context,
-        array $data = []
-    ) {
-        parent::__construct($context, $data);
-    }
-
-    /**
      * Get option array
      *
      * @return array
      */
-    protected function getSelectOptions()
+    protected function getSelectOptions(): array
     {
         if ($this->selectOptions === null) {
             $this->selectOptions = [
@@ -57,7 +45,7 @@ class Yesno extends Select
      *
      * @return mixed
      */
-    public function setInputName($value)
+    public function setInputName(string $value)
     {
         return $this->setName($value);
     }
@@ -67,11 +55,11 @@ class Yesno extends Select
      *
      * @return string
      */
-    public function _toHtml()
+    public function _toHtml(): string
     {
         if (!$this->getOptions()) {
             foreach ($this->getSelectOptions() as $rewriteType => $rewriteLabel) {
-                $this->addOption($rewriteType, addslashes($rewriteLabel));
+                $this->addOption($rewriteType, addslashes((string)$rewriteLabel));
             }
         }
         return parent::_toHtml();

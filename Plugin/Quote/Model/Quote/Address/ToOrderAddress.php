@@ -1,13 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smsapi\Smsapi2\Plugin\Quote\Model\Quote\Address;
 
+use Closure;
+use Magento\Quote\Model\Quote\Address;
+
+/**
+ * Class ToOrderAddress
+ * @package Smsapi\Smsapi2\Plugin\Quote\Model\Quote\Address
+ */
 class ToOrderAddress
 {
+    /**
+     * @param Address\ToOrderAddress $subject
+     * @param Closure $proceed
+     * @param Address $address
+     * @param array $data
+     * @return mixed
+     */
     public function aroundConvert(
-        \Magento\Quote\Model\Quote\Address\ToOrderAddress $subject,
-        \Closure $proceed,
-        \Magento\Quote\Model\Quote\Address $address,
+        Address\ToOrderAddress $subject,
+        Closure $proceed,
+        Address $address,
         $data = []
     ) {
         $result = $proceed($address, $data);

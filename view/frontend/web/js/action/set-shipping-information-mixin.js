@@ -53,8 +53,7 @@ define([
                         billingAddress.customAttributes['send_sms_alert'] = true;
                     }
 
-                    if (shippingAddress.customAttributes['sms_alert'] !== undefined)
-                    {
+                    if (shippingAddress.customAttributes['sms_alert'] !== undefined) {
                         shippingAddress.customAttributes['sms_alert'].label = ' ';
                         billingAddress.customAttributes['sms_alert'].label = ' ';
                         shippingAddress.customAttributes['send_sms_alert'] = true;
