@@ -18,33 +18,76 @@
             <label>SMSAPI</label>
             <tab>monogo</tab>
             <resource>Smsapi_Smsapi::config</resource>
-            <group id="smsapi_system_status" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>System status</label>
-                <field id="system_status" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
-                    <frontend_model>Smsapi\Smsapi2\Block\Adminhtml\System\Config\Status</frontend_model>
-                    <attribute type="shared">1</attribute>
-                </field>
-            </group>
             <group id="general" translate="label, comment" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Configuration</label>
                 <field id="enable" translate="label, comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Module</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="oauth_enable" translate="label, comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Oauth</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="token_buttons_pl" translate="registered_button_label token_button_label" sortOrder="110" showInDefault="1" showInWebsite="1">
+                    <attribute type="registered_button_label">Register in SMSAPI</attribute>
+                    <attribute type="registered_button_url">
+                        <![CDATA[https://www.smsapi.pl/rejestracja]]>
+                    </attribute>
+                    <attribute type="token_button_label">Generate Token</attribute>
+                    <attribute type="token_button_url">
+                        <![CDATA[https://ssl.smsapi.pl/react/oauth/manage]]>
+                    </attribute>
+                    <frontend_model>Smsapi\Smsapi2\Block\Adminhtml\System\Config\ApiButtons</frontend_model>
+                    <depends>
+                        <field id="smsapi/general/enable">1</field>
+                        <field id="smsapi/general/service_location">pl</field>
+                    </depends>
+                </field>
+                <field id="token_buttons_com" translate="registered_button_label token_button_label" sortOrder="110" showInDefault="1" showInWebsite="1">
+                    <attribute type="registered_button_label">Register in SMSAPI</attribute>
+                    <attribute type="registered_button_url">
+                        <![CDATA[https://www.smsapi.com/en/signup]]>
+                    </attribute>
+                    <attribute type="token_button_label">Generate Token</attribute>
+                    <attribute type="token_button_url">
+                        <![CDATA[https://ssl.smsapi.com/react/oauth/manage]]>
+                    </attribute>
+                    <frontend_model>Smsapi\Smsapi2\Block\Adminhtml\System\Config\ApiButtons</frontend_model>
+                    <depends>
+                        <field id="smsapi/general/enable">1</field>
+                        <field id="smsapi/general/service_location">com</field>
+                    </depends>
+                </field>
+                <field id="service_location" translate="label, comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Service Location</label>
+                    <source_model>Smsapi\Smsapi2\Model\Config\Source\ServiceLocation</source_model>
+                    <validate>required-entry validate-select</validate>
                     <depends>
                         <field id="smsapi/general/enable">1</field>
                     </depends>
                 </field>
-                <field id="apitoken_enable" translate="label, comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Token Auth</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="service_enabled" translate="label, comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Service</label>
+                    <source_model>Smsapi\Smsapi2\Model\Config\Source\Service</source_model>
+                    <backend_model>Smsapi\Smsapi2\Model\Config\Backend\ApitokenEnable</backend_model>
+                    <validate>required-entry validate-select</validate>
                     <depends>
                         <field id="smsapi/general/enable">1</field>
-                        <field id="smsapi/general/oauth_enable">0</field>
-
+                    </depends>
+                    <comment>Please choose the service.</comment>
+                </field>
+                <field id="api_token_status" translate="label, comment" sortOrder="120" showInDefault="1" showInWebsite="1">
+                    <frontend_model>Smsapi\Smsapi2\Block\Adminhtml\System\Config\ApiToken</frontend_model>
+                    <depends>
+                        <field id="smsapi/general/enable">1</field>
+                        <field id="smsapi/general/service_enabled">apitoken</field>
+                    </depends>
+                </field>
+                <field id="oauth_buttons" translate="button_label attribute sandbox_button_label" sortOrder="120" showInDefault="1" showInWebsite="1">
+                    <attribute type="button_label">Oauth Login</attribute>
+                    <attribute type="button_url">
+                        <![CDATA[https://www.paypal.com/webapps/merchantboarding/webflow/externalpartnerflow]]>
+                    </attribute>
+                    <frontend_model>Smsapi\Smsapi2\Block\Adminhtml\System\Config\Oauth</frontend_model>
+                    <depends>
+                        <field id="smsapi/general/enable">1</field>
+                        <field id="smsapi/general/service_enabled">oauth</field>
                     </depends>
                 </field>
                 <field id="apitoken" translate="label, comment" type="obscure" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -52,9 +95,8 @@
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <validate>required-entry</validate>
                     <depends>
-                        <field id="smsapi/general/apitoken_enable">1</field>
-                        <field id="smsapi/general/oauth_enable">0</field>
-
+                        <field id="smsapi/general/enable">1</field>
+                        <field id="smsapi/general/service_enabled">apitoken</field>
                     </depends>
                 </field>
                 <field id="allow_long" translate="label, comment" type="select" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -72,8 +114,6 @@
                         <field id="smsapi/general/enable">1</field>
                     </depends>
                 </field>
-
-
                 <field id="sender" translate="label, comment" type="select" sortOrder="600" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>SMS Sender</label>
                     <source_model>Smsapi\Smsapi2\Model\Config\Source\Sender</source_model>
@@ -81,16 +121,6 @@
                         <field id="smsapi/general/enable">1</field>
                     </depends>
                     <comment>W celu dodania pola nadawcy kliknij 	&lt;span id=senders_comment	 &gt;tutaj&lt;/span&gt;</comment>
-                </field>
-                <field id="service" translate="label, comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Service</label>
-                    <source_model>Smsapi\Smsapi2\Model\Config\Source\Service</source_model>
-                    <validate>required-entry validate-select</validate>
-                    <depends>
-                        <field id="smsapi/general/enable">1</field>
-                        <field id="smsapi/general/apitoken_enable">1</field>
-
-                    </depends>
                 </field>
                 <field id="ccnumbers" translate="label, comment" type="text" sortOrder="700" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Additional Store Owner phone numbers for notification</label>
@@ -135,7 +165,6 @@
                     </depends>
                     <comment>Log to file var/log/smsapi.log</comment>
                 </field>
-
             </group>
         </section>
     </system>

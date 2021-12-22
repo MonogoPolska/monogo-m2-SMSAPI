@@ -1,20 +1,26 @@
 # Changelog
 All notable changes to this module will be documented in this file.
 
-## [1.0.7]
-Refactor, fix minor bugs.
+## [1.1.0]
+Features:
+- add compatibility for Magento 2.4.x
+- add OAuth Authorization
 
-## [1.0.3-1.0.6]
-Oauth Authorization
+Bugfixes:
+ - fix minor bugs
 
-## [1.0.2] 
-Namespace changes due Magneto Marketplace requirements
+Changed:
+ - code refactor
+ 
+## [1.0.2]
+Changed: 
+- namespace changes due Magneto Marketplace requirements
 
+Bugfixes:
+ - fix minor bugs
 
 ## [1.0.1] initial version
-### Added
-Initial version of a module files
-
-Composer configuration
-
-Readme & Changelog files
+Added:
+- Initial version of a module files
+- composer configuration
+- Readme & Changelog files

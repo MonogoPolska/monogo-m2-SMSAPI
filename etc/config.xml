@@ -13,11 +13,10 @@
         <smsapi>
             <general>
                 <enable>0</enable>
-                <apitoken backend_model="Magento\Config\Model\Config\Backend\Encrypted"></apitoken>
-                <oauth_enable>1</oauth_enable>
-                <apitoken_enable>0</apitoken_enable>
-                <service>pl</service>
+                <service_enabled>oauth</service_enabled>
+                <service_location>pl</service_location>
                 <alert_limit>2</alert_limit>
+                <apitoken backend_model="Magento\Config\Model\Config\Backend\Encrypted"></apitoken>
             </general>
             <oauth>
                 <client_id>wYF4JFiushWq1cecVt6riTTkONOaxOucHei4dzb8</client_id>
@@ -25,6 +24,11 @@
                 <bearer>0</bearer>
                 <refresh_token>0</refresh_token>
             </oauth>
+            <additional>
+                <oauth_token_url>https://oauth.smsapi.io/api/oauth/token</oauth_token_url>
+                <service_url_pl>https://ssl.smsapi.pl</service_url_pl>
+                <service_url_global>https://ssl.smsapi.com</service_url_global>
+            </additional>
         </smsapi>
     </default>
 </config>

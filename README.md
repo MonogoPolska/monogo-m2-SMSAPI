@@ -4,7 +4,7 @@
 
 ## Installation
 
-    ```"composer require monogo/smsapi"```
+    ```"composer require smsapi/smsapi2"```
 
 ## Improvements **TODO**
 

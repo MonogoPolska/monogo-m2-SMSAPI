@@ -2,13 +2,13 @@
     "name": "smsapi/smsapi2",
     "description": "Magento 2 SMSAPI integration",
     "require": {
-        "magento/framework": "102.0.*",
-        "php": ">=7.0.13",
+        "php": "~7.3.0||~7.4.0",
         "smsapi/php-client": "^3.0",
-        "guzzlehttp/psr7": "^1.0"
+        "guzzlehttp/psr7": "^1.0",
+        "magento/framework": "^102.0.0 || ^103.0.0"
     },
     "type": "magento2-module",
-    "version": "1.0.7-dev",
+    "version": "1.1.0-alpha.1",
     "license": "Apache-2.0",
     "keywords": ["Magento 2", "smsapi", "smsapi.pl", "smsapi.com"],
     "authors": [

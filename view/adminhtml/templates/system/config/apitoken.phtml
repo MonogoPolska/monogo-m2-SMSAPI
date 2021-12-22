@@ -1,0 +1,53 @@
+<?php
+/**
+ * @see \Smsapi\Smsapi2\Block\Adminhtml\System\Config\ApiToken
+ * @var \Smsapi\Smsapi2\Block\Adminhtml\System\Config\ApiToken $block
+ */
+?>
+
+<div class="smsapi_system_status_container_register">
+    <?php if (!$block->isTokenEnabled()): ?>
+        <p><span style="font-weight: bold;"><?= __('System Status: ') ?></span></p>
+        <p><?= __('This Service is not enabled') ?></p>
+        <p><?= __('Click Save Config to turn it On') ?></p>
+        <?php return; ?>
+    <?php endif; ?>
+    <?php $profile = $block->getProfile(); ?>
+    <?php if (!$profile && $block->isTokenSet()): ?>
+        <p>
+            <span style="font-weight: bold;"><?= __('System Status: ') ?></span>
+        </p>
+        <p>
+            <?= __('The Service is enabled') ?>
+        </p>
+        <p>
+            <?= __('Not Logged In') ?>
+        </p>
+        <?php if (!empty($block->getErrors())): ?>
+            <p>
+                <span style="font-weight: bold;"><?= __('You have some errors during connection: ') ?></span>
+            </p>
+            <?php foreach ($block->getErrors() as $error): ?>
+                <div class="error_container">
+                    <span style="color:red"> <?= __($error) ?> </span><br/>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if ($profile): ?>
+        <p><span style="font-weight: bold;"><?= __('System Status: ') ?></span>
+            <span
+                style="font-weight: bold; color:green"><?= __('Logged In With Token Auth') ?></span>
+        </p>
+        <span
+            style="font-weight: bold; color:green"> <?= __('Account') ?>: </span><span><?= $profile->name ?></span>
+        <br/>
+        <span
+            style="font-weight: bold; color:green"> <?= __('Points') ?>: </span><span><?= $profile->points ?></span>
+        <br/>
+        <span><a href="https://ssl.smsapi.<?= $block->getService() ?>"
+                 target="_blank">ssl.smsapi.<?= $block->getService() ?></a></span><br/>
+        <?php $block->getBaseUrl() ?>
+    <?php endif; ?>
+</div>

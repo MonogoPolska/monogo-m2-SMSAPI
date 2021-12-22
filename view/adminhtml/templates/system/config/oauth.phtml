@@ -1,0 +1,60 @@
+<?php
+/**
+ * @see \Smsapi\Smsapi2\Block\Adminhtml\System\Config\Oauth
+ * @var \Smsapi\Smsapi2\Block\Adminhtml\System\Config\Oauth $block
+ */
+?>
+
+<div class="smsapi_system_status_container_register">
+    <?php if (!$block->isOauthEnabled()): ?>
+        <p><span style="font-weight: bold;"><?= __('System Status: ') ?></span></p>
+        <p><?= __('This Service is not enabled') ?></p>
+        <p><?= __('Click Save Config to turn it On') ?></p>
+        <?php return; ?>
+    <?php endif; ?>
+    <?php if (!$block->isBearerSet() || !$block->getProfile()): ?>
+        <button id="oauth" title="<?= __('OAuth Login') ?>" type="button"
+                class="action-default scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                data-ui-id="page-actions-toolbar-save-button" role="button" aria-disabled="false"
+                onclick="window.open('<?= $block->getOauthUrl() ?>')">
+            <span class="ui-button-text">
+               <span><?= __('OAuth Login') ?></span>
+            </span>
+        </button>
+        <p><span style="font-weight: bold;"><?= __('System Status: ') ?></span></p>
+        <p><?= __('This Service is enabled') ?></p>
+        <p><?= __('Not Logged In') ?></p>
+        <?php if (!empty($block->getErrors())): ?>
+            <p>
+                <span style="font-weight: bold;"><?= __('You have some errors during connection: ') ?></span>
+            </p>
+            <?php foreach ($block->getErrors() as $error): ?>
+                <div class="error_container">
+                    <span style="color:red"> <?= __($error) ?> </span><br/>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    <?php endif; ?>
+    <?php $profile = $block->getProfile() ?>
+    <?php if ($profile): ?>
+        <p><span style="font-weight: bold;"><?= __('System Status: ') ?></span>
+            <span
+                style="font-weight: bold; color:green"><?= __('Logged In with OAuth') ?></span>
+        </p>
+        <span
+            style="font-weight: bold; color:green"> <?= __('Account') ?>: </span><span><?= $profile->name ?></span>
+        <br/>
+        <span
+            style="font-weight: bold; color:green"> <?= __('Points') ?>: </span><span><?= $profile->points ?></span>
+        <br/>
+        <span
+        <span><a href="https://oauth.smsapi.io/" target="_blank">oauth.smsapi.io</a></span><br/>
+    <?php endif; ?>
+</div>
+<script>
+    require(['jquery'], function ($) {
+        var service = '<?= $block->getService()?>';
+        var href = "window.open('https://ssl.smsapi.xxx/sms_settings/sendernames/')";
+        $("#senders_comment").attr("onclick", href.replace('xxx', service)).css("font-weight", "bold");
+    });
+</script>

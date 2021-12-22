@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright ©  All rights reserved.
- * See COPYING.txt for license details.
- */
 declare(strict_types=1);
 
 namespace Smsapi\Smsapi2\Controller\Adminhtml\OAuth;
@@ -64,7 +60,7 @@ class Callback extends Action
     public function execute(): ResponseInterface
     {
         try {
-            $code = $this->getRequest()->getParam('code');
+            $code = (string)$this->getRequest()->getParam('code');
             $result = $this->smsapiCodeManagement->getSmsapiCode($code);
             if (!$result) {
                 throw new AuthorizationException(__('Authorization error, try again.'));

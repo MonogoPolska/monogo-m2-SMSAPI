@@ -1,0 +1,20 @@
+<?php
+/**
+ * @var \Smsapi\Smsapi2\Block\Adminhtml\System\Config\ApiButtons $block
+ */
+?>
+<div class="smsapi-buttons-container">
+    <div style="text-align: left;">
+        <a class="action-default"
+           href="<?= /* @noEscape */
+           $block->escapeUrl($block->getRegisteredButtonUrl()) ?>"
+           target="_blank"><?= $block->escapeHtml($block->getRegisteredButtonLabel()) ?>
+        </a>
+
+        <a class="action-default" style="margin-left: 10px;"
+           href="<?= /* @noEscape */
+           $block->escapeUrl($block->getTokenButtonUrl()) ?>"
+           target="_blank"><?= $block->escapeHtml($block->getTokenButtonLabel()) ?>
+        </a>
+    </div>
+</div>

@@ -27,7 +27,7 @@ class Config extends AbstractHelper
 
     public const ALERT_LIMIT = 'general/alert_limit';
 
-    public const SERVICE = 'general/service';
+    public const SERVICE = 'general/service_location';
 
     public const CC_NUMBERS = 'general/ccnumbers';
 
@@ -43,9 +43,9 @@ class Config extends AbstractHelper
 
     public const REFRESH_TOKEN = 'oauth/refresh_token';
 
-    public const OAUTH_ENABLE = 'general/oauth_enable';
+    public const OAUTH_ENABLE = 'general/service_enabled';
 
-    public const TOKEN_ENABLE = 'general/apitoken_enable';
+    public const TOKEN_ENABLE = 'general/service_enabled';
 
     protected $templates;
 
@@ -282,7 +282,7 @@ class Config extends AbstractHelper
      */
     public function getOauthEnable(): int
     {
-        return (int)$this->getConfig(self::CONFIG_PATH . self::OAUTH_ENABLE);
+        return (int)($this->getConfig(self::CONFIG_PATH . self::OAUTH_ENABLE) === "oauth");
     }
 
     /**
@@ -292,6 +292,6 @@ class Config extends AbstractHelper
      */
     public function getTokenEnable(): int
     {
-        return (int)$this->getConfig(self::CONFIG_PATH . self::TOKEN_ENABLE);
+        return (int)($this->getConfig(self::CONFIG_PATH . self::TOKEN_ENABLE) === "apitoken");
     }
 }

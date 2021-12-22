@@ -49,7 +49,7 @@ class Sender implements OptionSourceInterface
     /**
      * Sender constructor.
      *
-     * @param Log    $log
+     * @param Log $log
      * @param Config $config
      * @param Client $client
      */
@@ -67,10 +67,16 @@ class Sender implements OptionSourceInterface
      * Options getter
      * @return array|array[]
      */
-    public function toOptionArray():array
+    public function toOptionArray(): array
     {
         if (empty($this->optionArray)) {
-            $senders = $this->client->getSenders();
+            $label = __('Please Log In with Service');
+            if ($this->config->getOauthEnable() && !$this->config->getOauthBearer()) {
+                return [['value' => 'auth_failed', 'label' => $label]];
+            }
+            if ($this->config->getOauthEnable() || $this->config->getTokenEnable()) {
+                $senders = $this->client->getSenders();
+            }
             if (!empty($senders)) {
                 foreach ($senders as $sender) {
                     if ($sender->status == 'ACTIVE') {
@@ -78,7 +84,7 @@ class Sender implements OptionSourceInterface
                     }
                 }
             } else {
-                $this->optionArray = [['value' => 'auth_failed', 'label' => __('Please provide valid Token and save')]];
+                $this->optionArray = [['value' => 'auth_failed', 'label' => $label]];
             }
         }
         return $this->optionArray;

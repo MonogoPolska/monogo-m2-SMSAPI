@@ -7,10 +7,13 @@ namespace Smsapi\Smsapi2\Model\Config\Source;
 use Magento\Framework\Data\OptionSourceInterface;
 
 /**
- * Class Service
- * @package Smsapi\Smsapi2\Model\Config\Source
+ * Service source model
+ *
+ * @category SMSAPI
+ * @package  Smsapi|SMSAPI
+ * @author   Paweł Detka <pawel.detka@monogo.pl>
  */
-class Service implements OptionSourceInterface
+class ServiceLocation implements OptionSourceInterface
 {
     /**
      * @var array
@@ -31,9 +34,8 @@ class Service implements OptionSourceInterface
     {
         if (empty($this->optionArray)) {
             $this->optionArray = [
-                ['value' => 'disabled', 'label' => __('--- Disabled ---')],
-                ['value' => 'oauth', 'label' => __('Oauth')],
-                ['value' => 'apitoken', 'label' => __('Token Auth')]
+                ['value' => 'pl', 'label' => __('SMSAPI.PL')],
+                ['value' => 'com', 'label' => __('SMSAPI.COM')]
             ];
         }
         return $this->optionArray;
